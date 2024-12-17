@@ -4,7 +4,7 @@ exp_needed = 100
 
 # Amount of experience gained
 def gain_exp(n, current_exp, level, exp_needed):
-    exp = 5 * (1.7 ** n)
+    exp = 5 * (n ** 1.7)
     current_exp += exp
     return current_exp, level_up(current_exp, level, exp_needed)
 
@@ -18,10 +18,13 @@ def level_up(current_exp, level, exp_needed):
     exp_needed = round(exp_needed)
     return level, current_exp, exp_needed
 
-def main():
+def level_display(x):
     #TEST
     global current_exp, level, exp_needed
-    current_exp, (level, current_exp, exp_needed) = gain_exp(10, current_exp, level, exp_needed)
-    print(f"Level: {level}, Current EXP: {current_exp}, EXP Needed: {exp_needed}")
+    current_exp, (level, current_exp, exp_needed) = gain_exp(x, current_exp, level, exp_needed)
+    if level != 25:
+        print(f"Level: {level}  EXP Needed: {current_exp}/{exp_needed}")
+    else:
+        print("Level: 25 (MAX LEVEL)")
 
-main()
+level_display(100)
