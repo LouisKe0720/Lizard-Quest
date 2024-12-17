@@ -2,26 +2,23 @@ level = 1
 current_exp = 0
 exp_needed = 100
 
-#Amount of experience gained
-def exp(n):
+# Amount of experience gained
+def gain_exp(n, current_exp, level, exp_needed):
     exp = 5 * (1.7 ** n)
     current_exp += exp
-    level()
+    return current_exp, level_up(current_exp, level, exp_needed)
 
-#Leveling System
-def level(current_exp):
-    if level != 25:
-        #Increase level
-        while current_exp > exp_needed:
-            current_exp -= exp_needed
-            exp_needed = 100 * (1.2 ** level)
-            level += 1
-            return level
-        #Ignore
-        while current_exp < exp_needed:
-            return level
-exp(100)
-print(current_exp)
-exp(100)
-print(level)
+# Leveling System
+def level_up(current_exp, level, exp_needed):
+    while current_exp >= exp_needed and level < 25:
+        current_exp -= exp_needed
+        level += 1
+        exp_needed = 100 * (1.2 ** level)
+    return level, current_exp, exp_needed
 
+def main():
+    global current_exp, level, exp_needed
+    current_exp, (level, current_exp, exp_needed) = gain_exp(10, current_exp, level, exp_needed)
+    print(f"Level: {level}, Current EXP: {current_exp}, EXP Needed: {exp_needed}")
+
+main()
