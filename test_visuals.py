@@ -3,7 +3,7 @@ from pygame.locals import *
 from pygame.sprite import *
 from pygame.time import *
 import random
-import time
+import time 
 
 black = (0, 0, 0)
 white = (255, 255, 255)

@@ -14,9 +14,12 @@ def level_up(current_exp, level, exp_needed):
         current_exp -= exp_needed
         level += 1
         exp_needed = 100 * (1.2 ** level)
+    current_exp = round(current_exp)
+    exp_needed = round(exp_needed)
     return level, current_exp, exp_needed
 
 def main():
+    #TEST
     global current_exp, level, exp_needed
     current_exp, (level, current_exp, exp_needed) = gain_exp(10, current_exp, level, exp_needed)
     print(f"Level: {level}, Current EXP: {current_exp}, EXP Needed: {exp_needed}")
