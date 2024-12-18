@@ -1,3 +1,6 @@
+#############################################    IMPORT   #############################################
+import time
+
 #############################################  MECHANICS  #############################################
 
 
@@ -9,49 +12,97 @@ exp_needed = 100
 
 # Amount of experience gained
 def gain_exp(n, current_exp, level, exp_needed):
-    exp = 5 * (n ** 1.7)
+    exp = 5 * (n ** 1.7) # CAN CHANGE
     current_exp += exp
     return level_up(current_exp, level, exp_needed)
 
 # Leveling System
 def level_up(current_exp, level, exp_needed):
-    while current_exp >= exp_needed and level < 25:
+    while current_exp >= exp_needed and level < 25: #CAN CHANGE MAX LEVEL
         current_exp -= exp_needed
         level += 1
-        exp_needed = 100 * (1.2 ** level)
+        exp_needed = 100 * (1.2 ** level) # CAN CHANGE
     return level, round(current_exp), round(exp_needed)
 
 # Display Level
-def level_display(x):
+def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
     global current_exp, level, exp_needed
     level, current_exp, exp_needed = gain_exp(x, current_exp, level, exp_needed)
-    if level != 25:
+    if level != 25: # CAN CHANGE MAX LEVEL
         print(f"Level: {level}  EXP Needed: {current_exp}/{exp_needed}")
     else:
-        print("Level: 25 (MAX LEVEL)")
+        print("Level: 25 (MAX LEVEL)") # CAN CHANGE MAX LEVEL
 
 #############################################  HEALTH SYSTEM  #############################################
 
-player_health = 15
+player_health = 15 # CAN CHANGE
 monster_health = 0
+max_health = 15 # CAN CHANGE
+
+# Player Health calculation
+def player_health_display(level):
+    global player_health
+    global max_health
+    player_health = 15 + (2 * (level - 1))
+    max_health = player_health
 
 # Player Damage Calculation
-def player_damage(damage):
+def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
     global player_health
     player_health -= damage
     if player_health <= 0:
+        #PLACEHOLDER
         # TRY AGAIN SCREEN
-        return
+        return 
 
 # Monster Health
-def monster_health_display(difficulty):
+def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
     global monster_health
     monster_health = 5 + (2 * (difficulty + level))
 
 # Monster Damage Calculation
-def monster_damage(damage):
+def monster_damage(damage): #TAKES IN AN ATTACK DAMAGE
     global monster_health
     monster_health -= damage
     if monster_health <= 0:
+        # PLACEHOLDER
         # MONSTER DEFEATED SCREEN
         return
+    
+# AUTO HEAL?
+def auto_heal(): # CAN ADD TIME TO THIS
+    global player_health
+    player_health += 1
+    if player_health > max_health:
+        player_health = max_health 
+    
+#############################################  TIME  #############################################
+
+# START TIME
+def start_stopwatch(): # MUST CALL IT AT THE START
+    global start_time
+    start_time = time.time()
+
+# STOP TIME
+def stop_stopwatch(): # DON"T CALL IT, USE TIME ELAPSED
+    global start_time
+    return time.time() - start_time
+
+# TIME FORMAT
+def time_format(time):
+    seconds = time % 60
+    minutes = (time // 60) % 60
+    hours = (time // 60) // 60
+    if seconds < 10:
+        seconds = f"0{seconds}"
+    if minutes < 10:
+        minutes = f"0{minutes}"
+    if hours < 10:
+        hours = f"0{hours}"
+    print(f"Time: {hours}:{minutes}:{seconds}") # CAN CHANGE TO BECOME RETURN
+
+# TIME ELAPSED
+def time_elapsed():
+    play_time = stop_stopwatch()
+    play_time = int(play_time) # ROUNDS DOWN TO SECOND
+    time_format(play_time)
