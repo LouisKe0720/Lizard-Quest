@@ -4,6 +4,7 @@ from pygame.sprite import *
 from pygame.time import *
 import random
 import time 
+import mechanics
 
 black = (0, 0, 0)
 white = (255, 255, 255)

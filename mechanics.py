@@ -3,7 +3,6 @@ import time
 
 #############################################  MECHANICS  #############################################
 
-
 #############################################  EXP SYSTEM #############################################
 
 level = 1
@@ -43,7 +42,7 @@ max_health = 15 # CAN CHANGE
 def player_health_display(level):
     global player_health
     global max_health
-    player_health = 15 + (2 * (level - 1))
+    player_health = 15 + (2 * (level - 1)) # CAN CHANGE
     max_health = player_health
 
 # Player Damage Calculation
@@ -58,7 +57,7 @@ def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
 # Monster Health
 def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
     global monster_health
-    monster_health = 5 + (2 * (difficulty + level))
+    monster_health = 5 + (2 * (difficulty + level)) # CAN CHANGE
 
 # Monster Damage Calculation
 def monster_damage(damage): #TAKES IN AN ATTACK DAMAGE
@@ -72,7 +71,7 @@ def monster_damage(damage): #TAKES IN AN ATTACK DAMAGE
 # AUTO HEAL?
 def auto_heal(): # CAN ADD TIME TO THIS
     global player_health
-    player_health += 1
+    player_health += 1 # CAN CHANGE HOW MUCH TO HEAL
     if player_health > max_health:
         player_health = max_health 
     
@@ -106,3 +105,5 @@ def time_elapsed():
     play_time = stop_stopwatch()
     play_time = int(play_time) # ROUNDS DOWN TO SECOND
     time_format(play_time)
+
+#############################################  MAIN  #############################################
