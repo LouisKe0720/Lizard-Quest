@@ -42,8 +42,6 @@ def screen_cover(surface, cover_height):
     pygame.draw.rect(surface, (50, 50, 50), (0, -20, screen_width, cover_height+40))
     pygame.draw.rect(surface, black, (0, 0, screen_width, cover_height))
 
-import pygame
-
 def draw_grass(surface):
     pixel_spacing = 30
     for i in range(0, screen_width, pixel_spacing):
