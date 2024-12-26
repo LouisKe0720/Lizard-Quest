@@ -19,6 +19,7 @@ speed = 2
 pygame.init()
 screen_width, screen_height = 600, 480
 screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_icon(pygame.image.load('LQ LOGO.png'))
 pygame.display.set_caption("Test Walking")
 screen.fill(white)
 
