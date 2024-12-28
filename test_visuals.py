@@ -4,7 +4,6 @@ from pygame.sprite import *
 from pygame.time import *
 import random
 import time 
-import mechanics
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -14,7 +13,7 @@ x = 300
 y = 220
 dx = 500
 dy = 220
-speed = 2
+speed = 5
 
 pygame.init()
 screen_width, screen_height = 600, 480
@@ -43,26 +42,26 @@ def screen_cover(surface, cover_height):
     pygame.draw.rect(surface, (50, 50, 50), (0, -20, screen_width, cover_height+40))
     pygame.draw.rect(surface, black, (0, 0, screen_width, cover_height))
 
-def draw_grass(surface):
-    pixel_spacing = 30
+p_block = pygame.image.load("PURPLE BLOCK TEXTURE.png")
+p_block = pygame.transform.scale(p_block, (22,22))
+p_region = pygame.image.load("PURPLE REGION TEXTURE.png")
+p_water = pygame.image.load("WATER TEXTURE.png")
+
+def draw_grass(surface, pixel_spacing):
     for i in range(0, screen_width, pixel_spacing):
         for j in range(0, screen_height, pixel_spacing):
-            pygame.draw.rect(surface, grass, (i, j, 3, 3))
-            pygame.draw.rect(surface, grass, (i+5, j+6, 3, 3))
-            pygame.draw.rect(surface, grass, (i-5, j+8, 3, 3))
+            surface.blit(p_region, (i, j))
 
-def draw_block(surface, x, y, final_x, final_y):
+def draw_block(surface, x, y, final_x, final_y, pixel_spacing=20):
     for i in range(x, final_x, pixel_spacing):
         for j in range(y, final_y, pixel_spacing):
-            pygame.draw.rect(surface, (0, 0, 0), (i, j, 22, 22))
-            pygame.draw.rect(surface, (50, 50, 50), (i, j, 20, 20))
-            pygame.draw.rect(surface, (100, 100, 100), (i+2, j+2, 5, 8))
+            surface.blit(p_block, (i, j))
 
 pixel_spacing = 30
 
 def background(surface):
     pygame.draw.rect(surface, (105, 201, 97), (0, 0, screen_width, screen_height))
-    draw_grass(screen)
+    draw_grass(screen, 15)
 
     block_positions = [
         (540, 300, 540+90, screen_height), (450, 360, 450+90, screen_height), (390, 420, 390+90, screen_height), (0, 0, 90, 120), 
@@ -89,7 +88,7 @@ class ImageSprite(Sprite):
     def update(self, x, y):
         self.rect.center = (x, y)
 
-dracky = ImageSprite('Dracky_Artwork.png')
+mutant = ImageSprite('MUTANT 1.png')
 frame_1 = ImageSprite('PIXEL TEST F1.png')
 frame_2 = ImageSprite('PIXEL TEST F2.png')
 frame_3 = ImageSprite('PIXEL TEST F3.png')
@@ -101,7 +100,7 @@ frame_count = 0
 frame_change = 5
 
 sprite = frame_1
-sprite_group = Group(sprite, dracky)
+sprite_group = Group(sprite, mutant)
 
 direction = None
 moving = False
@@ -119,7 +118,7 @@ while running:
         if direction != 'left':
             frame_count = 0
             direction = 'left'
-    elif keys[K_d] and x < 480:
+    elif keys[K_d] and x < 600:
         x += speed
         moving = True
         if direction != 'right':
@@ -150,13 +149,13 @@ while running:
 
 
     sprite.update(x, y)
-    dracky.update(dx, dy)
+    mutant.update(dx, dy)
 
     screen.fill(white)
     background(screen)
     sprite_group.draw(screen)
     
-    if sprite.rect.colliderect(dracky.rect):
+    if sprite.rect.colliderect(mutant.rect):
         speed = 0
         if pixel_falling:
             for pixel in falling_pixels:
@@ -166,8 +165,13 @@ while running:
                 cover_height += 8
         if cover_height == screen_height:
                 pixel_falling = False
-
+    
         screen_cover(screen, cover_height)
+    
+    # p_block_rect = p_block.get_rect()
+    # if sprite.rect.colliderect(p_block_rect):
+    #     speed = 0
+
     if pixel_falling == False:
         screen.fill(black)
         time.sleep(1)
