@@ -3,7 +3,7 @@ import time
 import random
 
 #############################################  MECHANICS  #############################################
-#Testing again
+
 #############################################  EXP SYSTEM #############################################
 
 level = 1
@@ -12,7 +12,7 @@ exp_needed = 100
 
 # Amount of experience gained
 def gain_exp(n, current_exp, level, exp_needed):
-    exp = 5 * (1.7) * n # CAN CHANGE
+    exp = 5 * (1.7)**n # CAN CHANGE
     current_exp += exp
     while current_exp >= exp_needed and level < 25: #CAN CHANGE MAX LEVEL
         current_exp -= exp_needed
@@ -110,24 +110,44 @@ def time_elapsed():
 # SKILL SYSTEM
 
 # SKILL 1
-def skill_1(damage): # CAN CHANGE
-    player_damage(damage)
+def skill_1(): # CAN CHANGE
+    monster_damage(4)
 
 # SKILL 2
-def skill_2(damage):
-    player_damage(damage)
+def skill_2():
+    monster_damage(6)
 
 # SKILL 3
-def skill_3(damage):
-    player_damage(damage)
+def skill_3():
+    monster_damage(8)
 
 # SKILL 4
-def skill_4(damage):
-    player_damage(damage)
+def skill_4():
+    monster_damage(10)
 
-# SKILL 5
-def skill_5(damage):
-    player_damage(damage)
+# CAN ADD MORE SKILLS
 
-# CAN ADD MORE SKILLS #############################################
+#############################################  MONSTER ATTACKS  #############################################
 
+def monster_attack1():
+    player_damage(2)
+
+def monster_attack2():
+    player_damage(3)
+
+def monster_attack3():
+    player_damage(4)
+
+def monster_attack4():
+    player_damage(5)
+
+def monster_attack():
+    randomMonsterAttack = random.randint(1, 4)
+    if randomMonsterAttack == 1:
+        monster_attack1()
+    elif randomMonsterAttack == 2:
+        monster_attack2()
+    elif randomMonsterAttack == 3:
+        monster_attack3()
+    elif randomMonsterAttack == 4:
+        monster_attack4()
