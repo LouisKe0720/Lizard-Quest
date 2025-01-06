@@ -3,7 +3,7 @@ from pygame.locals import *
 from pygame.sprite import *
 from pygame.time import *
 import random
-import time 
+import time
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -28,7 +28,7 @@ class FallingPixel:
     def __init__(self):
         self.x = random.randint(0, screen_width)
         self.y = random.randint(-40, screen_height)
-        self.speed = random.randint(6,15)
+        self.speed = random.randint(6, 15)
 
     def fall(self):
         self.y += self.speed
@@ -37,13 +37,13 @@ class FallingPixel:
         pygame.draw.rect(surface, black, (self.x, self.y, 20, 20))
 
 def screen_cover(surface, cover_height):
-    pygame.draw.rect(surface, (150, 150, 150), (0, -5, screen_width, cover_height+55))
-    pygame.draw.rect(surface, (100, 100, 100), (0, -10, screen_width, cover_height+50))
-    pygame.draw.rect(surface, (50, 50, 50), (0, -20, screen_width, cover_height+40))
+    pygame.draw.rect(surface, (150, 150, 150), (0, -5, screen_width, cover_height + 55))
+    pygame.draw.rect(surface, (100, 100, 100), (0, -10, screen_width, cover_height + 50))
+    pygame.draw.rect(surface, (50, 50, 50), (0, -20, screen_width, cover_height + 40))
     pygame.draw.rect(surface, black, (0, 0, screen_width, cover_height))
 
 p_block = pygame.image.load("PURPLE BLOCK TEXTURE.png")
-p_block = pygame.transform.scale(p_block, (22,22))
+p_block = pygame.transform.scale(p_block, (22, 22))
 p_region = pygame.image.load("PURPLE REGION TEXTURE.png")
 p_water = pygame.image.load("WATER TEXTURE.png")
 
@@ -64,7 +64,7 @@ def background(surface):
     draw_grass(screen, 15)
 
     block_positions = [
-        (540, 300, 540+90, screen_height), (450, 360, 450+90, screen_height), (390, 420, 390+90, screen_height), (0, 0, 90, 120), 
+        (540, 300, 540 + 90, screen_height), (450, 360, 450 + 90, screen_height), (390, 420, 390 + 90, screen_height), (0, 0, 90, 120),
         (0, 0, 45, 200), (0, 0, 20, 300)
     ]
 
@@ -102,6 +102,22 @@ frame_change = 5
 sprite = frame_1
 sprite_group = Group(sprite, mutant)
 
+def show_start_screen():
+    start_image = pygame.image.load('PLACEHOLDER START SCREEN.png')
+    start_image = pygame.transform.scale(start_image, (screen_width, screen_height))
+    screen.blit(start_image, (0, 0))
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                waiting = False
+
+show_start_screen()
+
 direction = None
 moving = False
 running = True
@@ -111,7 +127,7 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    
+
     if keys[K_a] and x > 0:
         x -= speed
         moving = True
@@ -136,17 +152,16 @@ while running:
     if moving:
         frame_count += 1
         if frame_count >= frame_change:
-                frame_count = 0
-                frame_num = (frame_num + 1) % len(frames)
-                sprite.image = frames[frame_num].image
-                if direction == 'left':
-                    if frame_num != 0:
-                        sprite.image = pygame.transform.flip(sprite.image, True, False)
-                    else:
-                        sprite.image = frames[frame_num].image
+            frame_count = 0
+            frame_num = (frame_num + 1) % len(frames)
+            sprite.image = frames[frame_num].image
+            if direction == 'left':
+                if frame_num != 0:
+                    sprite.image = pygame.transform.flip(sprite.image, True, False)
                 else:
                     sprite.image = frames[frame_num].image
-
+            else:
+                sprite.image = frames[frame_num].image
 
     sprite.update(x, y)
     mutant.update(dx, dy)
@@ -154,7 +169,7 @@ while running:
     screen.fill(white)
     background(screen)
     sprite_group.draw(screen)
-    
+
     if sprite.rect.colliderect(mutant.rect):
         speed = 0
         if pixel_falling:
@@ -162,15 +177,11 @@ while running:
                 pixel.fall()
                 pixel.draw(screen)
         if cover_height < screen_height:
-                cover_height += 8
+            cover_height += 8
         if cover_height == screen_height:
-                pixel_falling = False
-    
+            pixel_falling = False
+
         screen_cover(screen, cover_height)
-    
-    # p_block_rect = p_block.get_rect()
-    # if sprite.rect.colliderect(p_block_rect):
-    #     speed = 0
 
     if pixel_falling == False:
         screen.fill(black)
