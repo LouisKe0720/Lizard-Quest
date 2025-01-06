@@ -151,3 +151,5 @@ def monster_attack():
         monster_attack3()
     elif randomMonsterAttack == 4:
         monster_attack4()
+
+#random comment
