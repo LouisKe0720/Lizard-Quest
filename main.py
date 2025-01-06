@@ -4,6 +4,7 @@ from pygame.sprite import *
 from pygame.time import *
 import random
 import time
+import mechanics
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -102,19 +103,29 @@ frame_change = 5
 sprite = frame_1
 sprite_group = Group(sprite, mutant)
 
+mechanics.start_stopwatch()
 def show_start_screen():
     start_image = pygame.image.load('PLACEHOLDER START SCREEN.png')
     start_image = pygame.transform.scale(start_image, (screen_width, screen_height))
     screen.blit(start_image, (0, 0))
     pygame.display.flip()
     waiting = True
+    start_button = pygame.Rect(20, 170, 400, 75)
+    time_button = pygame.Rect(20, 270, 400, 75)
     while waiting:
+        pygame.draw.rect(screen, (255, 255, 255), start_button)  # Draw the button
+        pygame.draw.rect(screen, (255, 255, 255), time_button)  # Draw the button
+        screen.blit(start_image, (0, 0))  # Redraw the start image
+        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                waiting = False
+                if start_button.collidepoint(event.pos):
+                    waiting = False
+                    mechanics.time_elapsed()
+                
 
 show_start_screen()
 
@@ -187,11 +198,6 @@ while running:
         screen.fill(black)
         time.sleep(1)
         running = False
-
-    if start == False:
-        screen.blit(title_s, (0,0))
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            start = True
 
     pygame.display.flip()
     clock.tick(60)
