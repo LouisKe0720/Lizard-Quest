@@ -102,14 +102,16 @@ frame_change = 5
 sprite = frame_1
 sprite_group = Group(sprite, mutant)
 
+title_s = pygame.image.load("LQ TITLE SCREEN.png")
+
 direction = None
 moving = False
 running = True
+start = False
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
     keys = pygame.key.get_pressed()
     
     if keys[K_a] and x > 0:
@@ -176,6 +178,11 @@ while running:
         screen.fill(black)
         time.sleep(1)
         running = False
+
+    if start == False:
+        screen.blit(title_s, (0,0))
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            start = True
 
     pygame.display.flip()
     clock.tick(60)
