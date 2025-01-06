@@ -1,5 +1,6 @@
 #############################################    IMPORT   #############################################
 import time
+import random
 
 #############################################  MECHANICS  #############################################
 
@@ -11,12 +12,8 @@ exp_needed = 100
 
 # Amount of experience gained
 def gain_exp(n, current_exp, level, exp_needed):
-    exp = 5 * (n ** 1.7) # CAN CHANGE
+    exp = 5 * (1.7) * n # CAN CHANGE
     current_exp += exp
-    return level_up(current_exp, level, exp_needed)
-
-# Leveling System
-def level_up(current_exp, level, exp_needed):
     while current_exp >= exp_needed and level < 25: #CAN CHANGE MAX LEVEL
         current_exp -= exp_needed
         level += 1
@@ -44,6 +41,7 @@ def player_health_display(level):
     global max_health
     player_health = 15 + (2 * (level - 1)) # CAN CHANGE
     max_health = player_health
+    return player_health
 
 # Player Damage Calculation
 def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
@@ -58,6 +56,7 @@ def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
 def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
     global monster_health
     monster_health = 5 + (2 * (difficulty + level)) # CAN CHANGE
+    return monster_health
 
 # Monster Damage Calculation
 def monster_damage(damage): #TAKES IN AN ATTACK DAMAGE
@@ -106,4 +105,28 @@ def time_elapsed():
     play_time = int(play_time) # ROUNDS DOWN TO SECOND
     time_format(play_time)
 
-#############################################  MAIN  #############################################
+#############################################  SKILLS  #############################################
+
+# SKILL SYSTEM
+
+# SKILL 1
+def skill_1(damage): # CAN CHANGE
+    player_damage(damage)
+
+# SKILL 2
+def skill_2(damage):
+    player_damage(damage)
+
+# SKILL 3
+def skill_3(damage):
+    player_damage(damage)
+
+# SKILL 4
+def skill_4(damage):
+    player_damage(damage)
+
+# SKILL 5
+def skill_5(damage):
+    player_damage(damage)
+
+# CAN ADD MORE SKILLS #############################################
