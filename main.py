@@ -104,8 +104,22 @@ sprite = frame_1
 sprite_group = Group(sprite, mutant)
 
 mechanics.start_stopwatch()
+def show_title_screen():
+    title_image = pygame.image.load('LQ TITLE SCREEN.png')
+    title_image = pygame.transform.scale(title_image, (screen_width, screen_height))
+    screen.blit(title_image, (0, 0))
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                waiting = False
+
 def show_start_screen():
-    start_image = pygame.image.load('PLACEHOLDER START SCREEN.png')
+    start_image = pygame.image.load('LQ START SCREEN.png')
     start_image = pygame.transform.scale(start_image, (screen_width, screen_height))
     screen.blit(start_image, (0, 0))
     pygame.display.flip()
@@ -126,7 +140,7 @@ def show_start_screen():
                     waiting = False
                     mechanics.time_elapsed()
                 
-
+show_title_screen()
 show_start_screen()
 
 direction = None
