@@ -160,7 +160,7 @@ def show_start_screen():
                         pygame.draw.rect(screen, (0,0,0), back_button)
                         pygame.display.flip()
                         clock.tick(60)                 
-   
+
 mechanics.start_stopwatch()
 show_title_screen()
 show_start_screen()
@@ -169,6 +169,8 @@ direction = None
 moving = False
 running = True
 start = False
+battle_screen_shown = False
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -230,10 +232,13 @@ while running:
 
         screen_cover(screen, cover_height)
 
-    if pixel_falling == False:
-        screen.fill(black)
-        time.sleep(1)
-        running = False
+    # Code for battle screen but it does not work properly 
+    if pixel_falling == False and not battle_screen_shown:
+        battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
+        battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
+        screen.blit(battle_screen, (0, 0))
+        pygame.display.flip()
+        battle_screen_shown = True
 
     pygame.display.flip()
     clock.tick(60)
