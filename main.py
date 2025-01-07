@@ -17,6 +17,10 @@ dy = 220
 speed = 5
 
 pygame.init()
+
+pygame.font.init()
+font = pygame.font.SysFont('Arial', 30)
+
 screen_width, screen_height = 600, 480
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_icon(pygame.image.load('LQ LOGO.png'))
@@ -103,7 +107,6 @@ frame_change = 5
 sprite = frame_1
 sprite_group = Group(sprite, mutant)
 
-mechanics.start_stopwatch()
 def show_title_screen():
     title_image = pygame.image.load('LQ TITLE SCREEN.png')
     title_image = pygame.transform.scale(title_image, (screen_width, screen_height))
@@ -125,7 +128,8 @@ def show_start_screen():
     pygame.display.flip()
     waiting = True
     start_button = pygame.Rect(20, 170, 400, 75)
-    time_button = pygame.Rect(20, 270, 400, 75)
+    time_button = pygame.Rect(20, 370, 400, 75)
+    back_button = pygame.Rect(300, 370, 100, 75)
     while waiting:
         pygame.draw.rect(screen, (255, 255, 255), start_button)  # Draw the button
         pygame.draw.rect(screen, (255, 255, 255), time_button)  # Draw the button
@@ -138,8 +142,26 @@ def show_start_screen():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
                     waiting = False
-                    mechanics.time_elapsed()
-                
+                elif time_button.collidepoint(event.pos):  # Time Screen
+                    time_waiting = True
+                    while time_waiting:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if back_button.collidepoint(event.pos):
+                                    time_waiting = False
+
+                        time_text = mechanics.time_elapsed()
+                        screen.fill(white)  # Fill the screen with white color
+                        rendered_text = font.render(time_text, True, black)  # Render the time text
+                        screen.blit(rendered_text, (screen_width/2 - 150, screen_height/2 - 50))  # Display the rendered text
+                        pygame.draw.rect(screen, (0,0,0), back_button)
+                        pygame.display.flip()
+                        clock.tick(60)                 
+   
+mechanics.start_stopwatch()
 show_title_screen()
 show_start_screen()
 

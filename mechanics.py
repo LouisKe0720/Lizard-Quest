@@ -97,13 +97,13 @@ def time_format(time):
         minutes = f"0{minutes}"
     if hours < 10:
         hours = f"0{hours}"
-    print(f"Time: {hours}:{minutes}:{seconds}") # CAN CHANGE TO BECOME RETURN
+    return str(f"Time Played: {hours}:{minutes}:{seconds}")
 
 # TIME ELAPSED
 def time_elapsed():
     play_time = stop_stopwatch()
     play_time = int(play_time) # ROUNDS DOWN TO SECOND
-    time_format(play_time)
+    return time_format(play_time)
 
 #############################################  SKILLS  #############################################
 
