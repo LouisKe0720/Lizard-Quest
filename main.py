@@ -229,16 +229,15 @@ while running:
             cover_height += 8
         if cover_height == screen_height:
             pixel_falling = False
+            battle_screen_shown = True
 
         screen_cover(screen, cover_height)
 
     # Code for battle screen but it does not work properly 
-    if pixel_falling == False and not battle_screen_shown:
+    if pixel_falling == False and battle_screen_shown == True:
         battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
         screen.blit(battle_screen, (0, 0))
-        pygame.display.flip()
-        battle_screen_shown = True
 
     pygame.display.flip()
     clock.tick(60)
