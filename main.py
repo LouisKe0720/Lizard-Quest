@@ -93,7 +93,10 @@ class ImageSprite(Sprite):
     def update(self, x, y):
         self.rect.center = (x, y)
 
-mutant = ImageSprite('MUTANT 1.png')
+mutants = [ImageSprite('MUTANT 1.png'), ImageSprite('MUTANT 2.png'), ImageSprite('MUTANT 3.png'), ImageSprite('MUTANT 4.png'),
+           ImageSprite('MUTANT 5.png'), ImageSprite('MUTANT 6.png'), ImageSprite('MUTANT 7.png')]
+
+mutant = random.choice(mutants)
 frame_1 = ImageSprite('PIXEL TEST F1.png')
 frame_2 = ImageSprite('PIXEL TEST F2.png')
 frame_3 = ImageSprite('PIXEL TEST F3.png')
