@@ -243,10 +243,28 @@ while running:
 
         screen_cover(screen, cover_height)
     
-    if pixel_falling == False and battle_screen_shown == True:
+    while pixel_falling == False and battle_screen_shown == True:
         battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
-        screen.blit(battle_screen, (0, 0))
+        skill_button = pygame.Rect(5, 285, 110, 40)
+        skills_image = pygame.image.load('SKILLS DESCRIPTIONS - OVERLAY.png')
+        waiting = True
+        while waiting:
+            pygame.draw.rect(screen, (255, 255, 255), skill_button)
+            screen.blit(battle_screen, (0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if skill_button.collidepoint(event.pos):
+                        skills_opened = True #CLOSING THIS SKILL MENU IS NOT DONE
+                        while skills_opened:
+                            screen.blit(skills_image, (0, 0))
+                            pygame.display.update()
+                            clock.tick(60)
+            pygame.display.flip()
+            clock.tick(60)
 
     pygame.display.flip()
     clock.tick(60)
