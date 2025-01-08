@@ -230,6 +230,7 @@ while running:
     sprite_group.draw(screen)
 
     if sprite.rect.colliderect(mutant.rect):
+        pygame.mixer.music.stop()
         speed = 0
         if pixel_falling:
             for pixel in falling_pixels:
