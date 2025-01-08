@@ -40,6 +40,9 @@ class ImageSprite(Sprite):
     def update(self, x, y):
         self.rect.center = (x, y)
 
+
+# Will use later, just keeping them here for now while I figure out the dialogue boxes
+
 # mutants = [ImageSprite('MUTANT 1.png'), ImageSprite('MUTANT 2.png'), ImageSprite('MUTANT 3.png'), ImageSprite('MUTANT 4.png'),
 #            ImageSprite('MUTANT 5.png'), ImageSprite('MUTANT 6.png'), ImageSprite('MUTANT 7.png')]
 
