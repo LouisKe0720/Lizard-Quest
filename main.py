@@ -133,19 +133,26 @@ def show_start_screen():
     start_button = pygame.Rect(20, 170, 400, 75)
     time_button = pygame.Rect(20, 370, 400, 75)
     back_button = pygame.Rect(300, 370, 100, 75)
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("DQ Adventure Theme.mp3")
+    pygame.mixer.music.set_volume(0.5) 
+    
     while waiting:
-        pygame.draw.rect(screen, (255, 255, 255), start_button)  # Draw the button
-        pygame.draw.rect(screen, (255, 255, 255), time_button)  # Draw the button
-        screen.blit(start_image, (0, 0))  # Redraw the start image
+        pygame.draw.rect(screen, (255, 255, 255), start_button)  
+        pygame.draw.rect(screen, (255, 255, 255), time_button)  
+        screen.blit(start_image, (0, 0))  
         pygame.display.flip()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
+                    pygame.mixer.music.play(-1)  
                     waiting = False
-                elif time_button.collidepoint(event.pos):  # Time Screen
+                elif time_button.collidepoint(event.pos):  
                     time_waiting = True
                     while time_waiting:
                         for event in pygame.event.get():
@@ -157,12 +164,12 @@ def show_start_screen():
                                     time_waiting = False
 
                         time_text = mechanics.time_elapsed()
-                        screen.fill(white)  # Fill the screen with white color
-                        rendered_text = font.render(time_text, True, black)  # Render the time text
-                        screen.blit(rendered_text, (screen_width/2 - 150, screen_height/2 - 50))  # Display the rendered text
-                        pygame.draw.rect(screen, (0,0,0), back_button)
+                        screen.fill(white)  
+                        rendered_text = font.render(time_text, True, black)  
+                        screen.blit(rendered_text, (screen_width / 2 - 150, screen_height / 2 - 50))  
+                        pygame.draw.rect(screen, (0, 0, 0), back_button)
                         pygame.display.flip()
-                        clock.tick(60)                 
+                        clock.tick(60)
 
 mechanics.start_stopwatch()
 show_title_screen()
@@ -235,7 +242,7 @@ while running:
             battle_screen_shown = True
 
         screen_cover(screen, cover_height)
-        
+    
     if pixel_falling == False and battle_screen_shown == True:
         battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
