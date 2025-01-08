@@ -200,11 +200,24 @@ while running:
     screen.fill(black)
     screen.blit(dialogue_box, (0,0))
 
-    dialogue("*CRASH*", 235, 400)
-    # Still testing the rest
+    text = "*CRASH*"
+    dialogue(text, 235, 400)
+    
+    # keys = pygame.key.get_pressed()
     if event.type == pygame.MOUSEBUTTONDOWN:
-        show_cg(battle_cg)
+        if scene == 0:
+            show_cg(battle_cg)
+            cg1 = True
+            scene += 1
+    if cg1 == True:
+        screen.blit(battle_cg, (0,0))
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if scene == 1:
+            dia = True
+    if dia == True:
+        text = "Text Here"
         screen.blit(dialogue_box, (0,0))
+        dialogue(text, 235, 400)
 
     pygame.display.flip()
     clock.tick(60)
