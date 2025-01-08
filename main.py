@@ -133,10 +133,6 @@ def show_start_screen():
     start_button = pygame.Rect(20, 170, 400, 75)
     time_button = pygame.Rect(20, 370, 400, 75)
     back_button = pygame.Rect(300, 370, 100, 75)
-
-    pygame.mixer.init()
-    pygame.mixer.music.load("DQ Adventure Theme.mp3")
-    pygame.mixer.music.set_volume(0.5) 
     
     while waiting:
         pygame.draw.rect(screen, (255, 255, 255), start_button)  
@@ -150,7 +146,6 @@ def show_start_screen():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
-                    pygame.mixer.music.play(-1)  
                     waiting = False
                 elif time_button.collidepoint(event.pos):  
                     time_waiting = True
@@ -172,8 +167,14 @@ def show_start_screen():
                         clock.tick(60)
 
 mechanics.start_stopwatch()
+pygame.mixer.init()
+pygame.mixer.music.load("DQ Overture XI.mp3")
+pygame.mixer.music.set_volume(0.5) 
+pygame.mixer.music.play(-1)  
 show_title_screen()
 show_start_screen()
+pygame.mixer.music.load("DQ Adventure Theme.mp3")
+pygame.mixer.music.play(-1)
 
 direction = None
 moving = False
@@ -230,7 +231,9 @@ while running:
     sprite_group.draw(screen)
 
     if sprite.rect.colliderect(mutant.rect):
-        pygame.mixer.music.stop()
+        pygame.mixer.music.load("DQ Battle Theme SNES.mp3")
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
         speed = 0
         if pixel_falling:
             for pixel in falling_pixels:
@@ -273,19 +276,7 @@ while running:
                                     exit()
                                 if event.type == pygame.MOUSEBUTTONDOWN:
                                     if skill_button.collidepoint(event.pos):
-                                        skills_opened = False    
-                    elif flee_button.collidepoint(event.pos):  
-                        flee_opened = True
-                        while flee_opened:
-                            screen.blit(flee_image, (screen_width // 2, screen_height // 2))
-                            pygame.display.flip()
-                            clock.tick(60)
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pygame.quit()
-                                    exit()
-                                if event.type == pygame.MOUSEBUTTONDOWN:
-                                    flee_opened = False        
+                                        skills_opened = False           
             pygame.display.flip()
             clock.tick(60)
 

@@ -183,6 +183,10 @@ direction = None
 moving = False
 running = True
 start = False
+cg1 = False
+scene = 0
+dia = False
+text = ""
 
 battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
 battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
