@@ -235,8 +235,7 @@ while running:
             battle_screen_shown = True
 
         screen_cover(screen, cover_height)
-
-    # Code for battle screen but it does not work properly 
+        
     if pixel_falling == False and battle_screen_shown == True:
         battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
