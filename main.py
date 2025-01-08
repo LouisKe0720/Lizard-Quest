@@ -259,11 +259,18 @@ while running:
                     exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if skill_button.collidepoint(event.pos):
-                        skills_opened = True #CLOSING THIS SKILL MENU IS NOT DONE
+                        skills_opened = True
                         while skills_opened:
                             screen.blit(skills_image, (0, 0))
-                            pygame.display.update()
+                            pygame.display.flip()
                             clock.tick(60)
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+                                    exit()
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    if skill_button.collidepoint(event.pos):
+                                        skills_opened = False            
             pygame.display.flip()
             clock.tick(60)
 
