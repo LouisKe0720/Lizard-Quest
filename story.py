@@ -211,24 +211,36 @@ while running:
     if cg1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                            pygame.quit()
-                            exit()
+                pygame.quit()
+                exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 show_cg(battle_cg)
                 cg1_show = True
-                while cg1_show:
+                text_num = 0
+                texts = ["More Text", "Next Text", "And More Text"]
+                
+                while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
+                    screen.blit(dialogue_box, (0, 0))
+                    dialogue(texts[text_num], 235, 400)
+                    pygame.display.update()
+
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
                             exit()
-                        if event.type == pygame.MOUSEBUTTONDOWN:
-                            text = "More Text"
-                            screen.blit(dialogue_box, (0, 0))
-                            dialogue(text, 235, 400)
-                            pygame.display.update()
 
-            pygame.display.update()
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            text_num += 1
+                            if text_num >= len(texts):
+                                cg1_show = False
+                                cg1 = False
+
+        if cg2 == True:
+            screen.blits(spark_cg, (0,0))   
+        
+        pygame.display.update()
 
     pygame.display.flip()
     clock.tick(60)
