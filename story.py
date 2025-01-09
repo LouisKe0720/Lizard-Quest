@@ -207,7 +207,6 @@ while running:
 
     text = "*CRASH*"
     dialogue(text, 235, 400)
-    
     if cg1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -217,28 +216,69 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 show_cg(battle_cg)
                 cg1_show = True
-                texts = ["Filler text filler text filler text", "Text", "And More Text"]
-                texts_x = [200, 237, 235]
+                first_s = False
+                text_num = 0
+                # test text
+                texts = ["Lizard 1: The mutant king shot THE orb?!", "Lizard 2: ---", "And More Text"]
+                texts_x = [150, 237, 235]
                 
                 while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
                     screen.blit(dialogue_box, (0, 0))
-                    dialogue(texts[text_num], texts_x[text_num], 400)
+                    dialogue(texts[text_num], texts_x[text_num], 402)
                     pygame.display.update()
 
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
                             exit()
-
+                        
                         if event.type == pygame.MOUSEBUTTONDOWN:
                             text_num += 1
                             if text_num >= len(texts):
                                 cg1_show = False
+                                # test
                                 cg1 = False
+                                cg2 = True
+                                show_cg(spark_cg)
+                                cg2_show = True
+                                text2_num = 0
+                                sec_s = True
+    if cg2 == True:
+        if sec_s == True:
+            screen.blit(spark_cg, (0, 0))
+            screen.blit(dialogue_box, (0, 0))
+            dialogue("!!!", 240, 400)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
 
-        if cg2 == True:
-            screen.blits(spark_cg, (0,0))   
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                sec_s = False
+                text2_num = 0
+                # test text 2
+                texts2 = ["Test 2", "Text2", "And More Text2"]
+                texts2_x = [195, 237, 235]
+
+                while cg2_show and text2_num < len(texts2):
+                    screen.blit(spark_cg, (0, 0))
+                    screen.blit(dialogue_box, (0, 0))
+                    dialogue(texts2[text2_num], texts2_x[text2_num], 400)
+                    pygame.display.update()
+
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            exit()
+                        
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            text2_num += 1
+                            if text2_num >= len(texts):
+                                cg2_show = False
+                                # test
+                                cg2 = False
         
         pygame.display.update()
 
