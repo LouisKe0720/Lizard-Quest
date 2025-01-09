@@ -256,14 +256,15 @@ while running:
         items_button = pygame.Rect(5, 315, 110, 40)
         items_image = pygame.image.load('ITEM DESCRIPTIONS - BASE.png')
         items_opened = False
-        flee_button = pygame.Rect(5, 345, 110, 40)
+        flee_button = pygame.Rect(5, 373, 110, 40)
         flee_image = pygame.image.load('FLEE CHOICES.png')
+        flee_opened = False
         waiting = True
         while waiting:
             pygame.draw.rect(screen, (255, 255, 255), skill_button)
-            pygame.draw.rect(screen, (255, 255, 255), items_button)
-            screen.blit(battle_screen, (0, 0))
+            pygame.draw.rect(screen, (255, 255, 255), items_button)            
             pygame.draw.rect(screen, (255, 255, 255), flee_button)
+            screen.blit(battle_screen, (0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if skill_button.collidepoint(event.pos):
@@ -281,9 +282,11 @@ while running:
                                     skills_opened = False  
                                 if items_button.collidepoint(event.pos):
                                     skills_opened = False
+                                if flee_button.collidepoint(event.pos):
+                                    skills_opened = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if items_button.collidepoint(event.pos):
-                            items_opened = True
+                        items_opened = True
                     while items_opened:
                         screen.blit(items_image, (0, 0))
                         pygame.display.flip()
@@ -297,7 +300,26 @@ while running:
                                     items_opened = False
                                 if skill_button.collidepoint(event.pos):
                                     items_opened = False
-
+                                if flee_button.collidepoint(event.pos):
+                                    items_opened = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if flee_button.collidepoint(event.pos):
+                        flee_opened = True
+                    while flee_opened:
+                        screen.blit(flee_image, (0, 0))
+                        pygame.display.flip()
+                        clock.tick(60)
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if flee_button.collidepoint(event.pos):
+                                    flee_opened = False
+                                if skill_button.collidepoint(event.pos):
+                                    flee_opened = False
+                                if items_button.collidepoint(event.pos):
+                                    flee_opened = False
             pygame.display.flip()
             clock.tick(60)
 
