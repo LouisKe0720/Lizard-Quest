@@ -252,13 +252,13 @@ while running:
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
         skill_button = pygame.Rect(5, 285, 110, 40)
         skills_image = pygame.image.load('SKILLS DESCRIPTIONS - OVERLAY.png')
-        flee_button = pygame.Rect(5, 345, 110, 40)
+        flee_button = pygame.Rect(5, 373, 110, 40)
         flee_image = pygame.image.load('FLEE CHOICES.png')
         waiting = True
         while waiting:
+            screen.blit(battle_screen, (0, 0))
             pygame.draw.rect(screen, (255, 255, 255), skill_button)
             pygame.draw.rect(screen, (255, 255, 255), flee_button)
-            screen.blit(battle_screen, (0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -276,7 +276,21 @@ while running:
                                     exit()
                                 if event.type == pygame.MOUSEBUTTONDOWN:
                                     if skill_button.collidepoint(event.pos):
-                                        skills_opened = False           
+                                        skills_opened = False   
+                    elif flee_button.collidepoint(event.pos):  
+                        flee_opened = True
+                        while flee_opened:
+                            screen.blit(flee_image, (0,0))
+                            pygame.display.flip()
+                            clock.tick(60)
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+                                    exit()
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    flee_opened = False
+        
+                
             pygame.display.flip()
             clock.tick(60)
 
