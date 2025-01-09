@@ -254,11 +254,15 @@ while running:
         skills_image = pygame.image.load('SKILLS DESCRIPTIONS - OVERLAY.png')
         flee_button = pygame.Rect(5, 373, 110, 40)
         flee_image = pygame.image.load('FLEE CHOICES.png')
+        flee_success_image = pygame.image.load("FLEE SUCCESS.png")
+        yes_button = pygame.Rect(140, 358, 130, 60)
+        flee_fail_image = pygame.image.load("FLEE FAIL.png")
+        no_button = pygame.Rect(280, 358, 130, 60)
         waiting = True
         while waiting:
-            screen.blit(battle_screen, (0, 0))
             pygame.draw.rect(screen, (255, 255, 255), skill_button)
             pygame.draw.rect(screen, (255, 255, 255), flee_button)
+            screen.blit(battle_screen, (0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -280,6 +284,8 @@ while running:
                     elif flee_button.collidepoint(event.pos):  
                         flee_opened = True
                         while flee_opened:
+                            pygame.draw.rect(screen, (0, 255, 0), yes_button)
+                            pygame.draw.rect(screen, (255, 0, 0), no_button)
                             screen.blit(flee_image, (0,0))
                             pygame.display.flip()
                             clock.tick(60)
@@ -289,7 +295,34 @@ while running:
                                     exit()
                                 if event.type == pygame.MOUSEBUTTONDOWN:
                                     flee_opened = False
-        
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if yes_button.collidepoint(event.pos):
+                                    if random.choice([True, False]):  
+                                        success_opened = True
+                                        while success_opened:
+                                            screen.blit(flee_success_image, (0, 0))
+                                            pygame.display.flip()
+                                            clock.tick(60)
+                                            for event in pygame.event.get():
+                                                if event.type == pygame.QUIT:
+                                                    pygame.quit()
+                                                    exit()
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                                    success_opened = False
+                                    else:
+                                        fail_opened = True
+                                        while fail_opened:
+                                            screen.blit(flee_fail_image, (0, 0))
+                                            pygame.display.flip()
+                                            clock.tick(60)
+                                            for event in pygame.event.get():
+                                                if event.type == pygame.QUIT:
+                                                    pygame.quit()
+                                                    exit()
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                                    fail_opened = False
+                                                if no_button.collidepoint(event.pos):
+                                                    flee_opened = False
                 
             pygame.display.flip()
             clock.tick(60)
