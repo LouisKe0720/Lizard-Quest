@@ -19,7 +19,7 @@ speed = 5
 pygame.init()
 
 pygame.font.init()
-font = pygame.font.SysFont('Arial', 30)
+font = pygame.font.SysFont('Arial', 16)
 
 screen_width, screen_height = 600, 480
 screen = pygame.display.set_mode((screen_width, screen_height))
