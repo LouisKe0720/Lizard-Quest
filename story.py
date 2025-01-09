@@ -220,8 +220,12 @@ while running:
                 text_num = 0
                 # test text
                 texts = ["Lizard 1: The mutant king shot THE orb?!", "Lizard 2: WHAT!? OUR KING IS BARELY HOLDIN’ UP!", "*BANG*",
-                         "Lizard 3: AHHH!!!!!", "MC lizard: FATHER!"]
-                texts_x = [150, 145, 235, 220, 220]
+                         "Lizard King: AHHH!!!!!", "MC lizard: FATHER!", "Lizard 1: THEY GOT THE KING!", "Mutant: KNEEL BEFORE OUR KING’S POWER!",
+                         "Lizard King: …Hey kiddo.", "MC: DON’T TALK!! I’LL GET SUPPLIES TO STOP THE BLEEDING!", 
+                         "Lizard 3: You may not understand what I’m about to say to you but…","Lizard 3: …When the time comes…",
+                         "Lizard 3: Avenge for us ol’ lizards, ok?", "MC: STOP TALKING AS IF YOU’RE GOING TO DIE!", "Lizard 3: …Keep yourself alive until then, little guy.",
+                         "Lizard 3: That weird-lookin’ matter won’t keep itself from you.","Lizard 3: …"]
+                texts_x = [150, 125, 240, 220, 220, 210, 120, 220, 90, 50, 200, 195, 180, 170, 160, 240]
                 
                 while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
