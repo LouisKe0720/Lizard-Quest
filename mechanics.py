@@ -110,20 +110,24 @@ def time_elapsed():
 # SKILL SYSTEM
 
 # SKILL 1
-def skill_1(): # CAN CHANGE
+def use_gun(): # CAN CHANGE
     monster_damage(4)
 
 # SKILL 2
-def skill_2():
-    monster_damage(6)
+def lizard_punch():
+    monster_damage(10)
 
 # SKILL 3
-def skill_3():
-    monster_damage(8)
+def magic_punch():
+    monster_damage(15)
 
 # SKILL 4
-def skill_4():
-    monster_damage(10)
+def heal_hp():
+    global player_health
+    global max_health
+    player_health += 15
+    if player_health > max_health:
+        player_health = max_health
 
 # CAN ADD MORE SKILLS
 
@@ -151,3 +155,32 @@ def monster_attack():
         monster_attack3()
     elif randomMonsterAttack == 4:
         monster_attack4()
+
+############################################### ITEMS #############################################
+
+def item_appear():
+    global defenseUpPotion
+    global fleePotion
+    global healOrb
+    global magicUpPotion
+    defenseUpPotion = 0
+    fleePotion = 0
+    healOrb = 0
+    magicUpPotion = 0
+    return defenseUpPotion, fleePotion, healOrb, magicUpPotion
+
+def gain_defPotion(n):
+    global defenseUpPotion
+    defenseUpPotion += n
+
+def gain_fleePotion(n):
+    global fleePotion
+    fleePotion += n
+
+def gain_healOrb(n):
+    global healOrb
+    healOrb += n
+
+def gain_magicPotion(n):
+    global magicUpPotion
+    magicUpPotion += n

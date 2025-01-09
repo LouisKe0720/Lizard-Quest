@@ -259,6 +259,12 @@ while running:
         flee_button = pygame.Rect(5, 373, 110, 40)
         flee_image = pygame.image.load('FLEE CHOICES.png')
         flee_opened = False
+        defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
+        defenseUpPotion_image = pygame.image.load('ITEM DESCRIPTIONS - DEFENSE UP!.png')
+        fleePotion_image = pygame.image.load('ITEM DESCRIPTIONS - FLEE POTION.png')
+        healOrb_image = pygame.image.load('ITEM DESCRIPTIONS - HEAL ORB.png')
+        magicUpPotion_image = pygame.image.load('ITEM DESCRIPTIONS - MAGIC UP!.png')
+
         waiting = True
         while waiting:
             pygame.draw.rect(screen, (255, 255, 255), skill_button)
@@ -289,6 +295,14 @@ while running:
                         items_opened = True
                     while items_opened:
                         screen.blit(items_image, (0, 0))
+                        if defenseUpPotion > 0:
+                            screen.blit(defenseUpPotion_image, (0, 0))
+                        if fleePotion > 0:
+                            screen.blit(fleePotion_image, (0, 0))
+                        if healOrb > 0:
+                            screen.blit(healOrb_image, (0, 0))
+                        if magicUpPotion > 0:
+                            screen.blit(magicUpPotion_image, (0, 0))
                         pygame.display.flip()
                         clock.tick(60)
                         for event in pygame.event.get():
