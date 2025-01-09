@@ -217,13 +217,13 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 show_cg(battle_cg)
                 cg1_show = True
-                text_num = 0
-                texts = ["More Text", "Next Text", "And More Text"]
+                texts = ["Filler text filler text filler text", "Text", "And More Text"]
+                texts_x = [200, 237, 235]
                 
                 while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
                     screen.blit(dialogue_box, (0, 0))
-                    dialogue(texts[text_num], 235, 400)
+                    dialogue(texts[text_num], texts_x[text_num], 400)
                     pygame.display.update()
 
                     for event in pygame.event.get():
