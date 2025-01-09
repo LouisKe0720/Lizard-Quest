@@ -219,8 +219,9 @@ while running:
                 first_s = False
                 text_num = 0
                 # test text
-                texts = ["Lizard 1: The mutant king shot THE orb?!", "Lizard 2: ---", "And More Text"]
-                texts_x = [150, 237, 235]
+                texts = ["Lizard 1: The mutant king shot THE orb?!", "Lizard 2: WHAT!? OUR KING IS BARELY HOLDIN’ UP!", "*BANG*",
+                         "Lizard 3: AHHH!!!!!", "MC lizard: FATHER!"]
+                texts_x = [150, 145, 235, 220, 220]
                 
                 while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
