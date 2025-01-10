@@ -252,48 +252,93 @@ while running:
         battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
         skill_button = pygame.Rect(5, 285, 110, 40)
         skills_image = pygame.image.load('SKILLS DESCRIPTIONS - OVERLAY.png')
+        skills_opened = False
+        items_button = pygame.Rect(5, 315, 110, 40)
+        items_image = pygame.image.load('ITEM DESCRIPTIONS - BASE.png')
+        items_opened = False
         flee_button = pygame.Rect(5, 373, 110, 40)
         flee_image = pygame.image.load('FLEE CHOICES.png')
         flee_success_image = pygame.image.load("FLEE SUCCESS.png")
         yes_button = pygame.Rect(140, 358, 130, 60)
         flee_fail_image = pygame.image.load("FLEE FAIL.png")
         no_button = pygame.Rect(280, 358, 130, 60)
+        flee_opened = False
+        defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
+        defenseUpPotion_image = pygame.image.load('ITEM DESCRIPTIONS - DEFENSE UP!.png')
+        fleePotion_image = pygame.image.load('ITEM DESCRIPTIONS - FLEE POTION.png')
+        healOrb_image = pygame.image.load('ITEM DESCRIPTIONS - HEAL ORB.png')
+        magicUpPotion_image = pygame.image.load('ITEM DESCRIPTIONS - MAGIC UP!.png')
+
         waiting = True
         while waiting:
             pygame.draw.rect(screen, (255, 255, 255), skill_button)
+            pygame.draw.rect(screen, (255, 255, 255), items_button)            
             pygame.draw.rect(screen, (255, 255, 255), flee_button)
             screen.blit(battle_screen, (0, 0))
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if skill_button.collidepoint(event.pos):
                         skills_opened = True
-                        while skills_opened:
-                            screen.blit(skills_image, (0, 0))
-                            pygame.display.flip()
-                            clock.tick(60)
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pygame.quit()
-                                    exit()
-                                if event.type == pygame.MOUSEBUTTONDOWN:
-                                    if skill_button.collidepoint(event.pos):
-                                        skills_opened = False   
-                    elif flee_button.collidepoint(event.pos):  
+                    while skills_opened:
+                        screen.blit(skills_image, (0, 0))
+                        pygame.display.flip()
+                        clock.tick(60)
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if skill_button.collidepoint(event.pos):
+                                    skills_opened = False  
+                                if items_button.collidepoint(event.pos):
+                                    skills_opened = False
+                                if flee_button.collidepoint(event.pos):
+                                    skills_opened = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if items_button.collidepoint(event.pos):
+                        items_opened = True
+                    while items_opened:
+                        screen.blit(items_image, (0, 0))
+                        if defenseUpPotion > 0:
+                            screen.blit(defenseUpPotion_image, (0, 0))
+                        if fleePotion > 0:
+                            screen.blit(fleePotion_image, (0, 0))
+                        if healOrb > 0:
+                            screen.blit(healOrb_image, (0, 0))
+                        if magicUpPotion > 0:
+                            screen.blit(magicUpPotion_image, (0, 0))
+                        pygame.display.flip()
+                        clock.tick(60)
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if items_button.collidepoint(event.pos):
+                                    items_opened = False
+                                if skill_button.collidepoint(event.pos):
+                                    items_opened = False
+                                if flee_button.collidepoint(event.pos):
+                                    items_opened = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if flee_button.collidepoint(event.pos):
                         flee_opened = True
-                        while flee_opened:
-                            pygame.draw.rect(screen, (0, 255, 0), yes_button)
-                            pygame.draw.rect(screen, (255, 0, 0), no_button)
-                            screen.blit(flee_image, (0,0))
-                            pygame.display.flip()
-                            clock.tick(60)
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pygame.quit()
-                                    exit()
-                                if event.type == pygame.MOUSEBUTTONDOWN:
+                    while flee_opened:
+                        pygame.draw.rect(screen, (0, 255, 0), yes_button)
+                        pygame.draw.rect(screen, (255, 0, 0), no_button)
+                        screen.blit(flee_image, (0, 0))
+                        pygame.display.flip()
+                        clock.tick(60)
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if flee_button.collidepoint(event.pos):
+                                    flee_opened = False
+                                if skill_button.collidepoint(event.pos):
+                                    flee_opened = False
+                                if items_button.collidepoint(event.pos):
                                     flee_opened = False
                             if event.type == pygame.MOUSEBUTTONDOWN:
                                 if yes_button.collidepoint(event.pos):
