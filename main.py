@@ -366,8 +366,9 @@ while running:
                                                     exit()
                                                 if event.type == pygame.MOUSEBUTTONDOWN:
                                                     fail_opened = False
-                                                if no_button.collidepoint(event.pos):
-                                                    flee_opened = False
+
+                                elif no_button.collidepoint(event.pos):
+                                    flee_opened = False
                 
             pygame.display.flip()
             clock.tick(60)
