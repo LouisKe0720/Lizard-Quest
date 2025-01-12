@@ -153,18 +153,15 @@ def show_title_screen():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 waiting = False
-
 def show_start_screen():
     start_image = pygame.image.load('LQ START SCREEN.png')
     start_image = pygame.transform.scale(start_image, (screen_width, screen_height))
-    screen.blit(start_image, (0, 0))
-    pygame.display.flip()
     waiting = True
     while waiting:
         pygame.draw.rect(screen, white, start_button)
         pygame.draw.rect(screen, white, time_button)
-        screen.blit(start_image, (0, 0))
-        pygame.display.flip()
+        screen.blit(start_image, (0, 0))  # Redraw the start image
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -173,9 +170,10 @@ def show_start_screen():
                 if start_button.collidepoint(event.pos):
                     waiting = False
                 elif time_button.collidepoint(event.pos):
-                    show_time_screen()
+                    show_time_rectangle()
+        pygame.display.flip()
 
-def show_time_screen():
+def show_time_rectangle():
     time_waiting = True
     while time_waiting:
         for event in pygame.event.get():
@@ -183,15 +181,19 @@ def show_time_screen():
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if back_button.collidepoint(event.pos):
-                    time_waiting = False
+                time_waiting = False
+        
         time_text = mechanics.time_elapsed()
-        screen.fill(white)
+        text_rect = pygame.Rect(screen_width / 2 - 160, screen_height / 2, 320, 50)
+        black_outline = pygame.Rect(screen_width / 2 - 162, screen_height / 2 - 2, 324, 54)
+        pygame.draw.rect(screen, black, black_outline)
+        pygame.draw.rect(screen, white, text_rect)
         rendered_text = font.render(time_text, True, black)
-        screen.blit(rendered_text, (screen_width / 2 - 150, screen_height / 2 - 50))
-        pygame.draw.rect(screen, black, back_button)
+        screen.blit(rendered_text, (text_rect.x + 10, text_rect.y + 10))
+        
         pygame.display.flip()
         clock.tick(60)
+
 def show_battle_screen():
     defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
     waiting = True
@@ -209,6 +211,34 @@ def show_battle_screen():
                     show_flee_screen()
         draw_buttons()
         screen.blit(battle_screen, (0, 0))
+        player_battle_rectangle = pygame.Rect(5, 5, 150, 150)
+        player_battle_rectangle_outline = pygame.Rect(0, 0, 160, 160)
+        pygame.draw.rect(screen, black, player_battle_rectangle_outline)
+        pygame.draw.rect(screen, white, player_battle_rectangle)
+        player_health, player_magicPoints, player_level = mechanics.display()
+        if player_health < 100:
+            player_health = "0" + str(player_health)
+        if player_magicPoints < 100:
+            player_magicPoints = "0" + str(player_magicPoints)
+            if int(player_magicPoints) < 10:
+                player_magicPoints = "0" + str(player_magicPoints)
+        if player_level < 100:
+            player_level = "0" + str(player_level)
+            if int(player_level) < 10:
+                player_level = "0" + str(player_level)
+        player_name_text = player_name = font.render("     YOU", True, black)
+        player_health_text = font.render("HP:    " + player_health, True, black)
+        player_magicpoint_text = font.render("MP:", True, black)
+        player_magicpoint_text2 = font.render(player_magicPoints, True, black)
+        player_level_text = font.render("LV:     " + player_level, True, black)
+        screen.blit(player_name_text, (10, 15))
+        screen.blit(player_health_text, (10, 60))
+        screen.blit(player_magicpoint_text, (10, 90))
+        screen.blit(player_level_text, (10, 120))
+        screen.blit(player_magicpoint_text2, (91, 90))
+        enemy = mutant
+        enemy.image = pygame.transform.scale(enemy.image, (150, 150))
+        screen.blit(enemy.image, (screen_width /2 - 70, screen_height / 2 - 100))
         pygame.display.update()
 def draw_buttons():
     pygame.draw.rect(screen, white, skill_button)

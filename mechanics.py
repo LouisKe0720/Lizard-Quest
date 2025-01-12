@@ -6,26 +6,26 @@ import random
 
 #############################################  EXP SYSTEM #############################################
 
-level = 1
+player_level = 1
 current_exp = 0
 exp_needed = 100
 
 # Amount of experience gained
-def gain_exp(n, current_exp, level, exp_needed):
+def gain_exp(n, current_exp, player_level, exp_needed):
     exp = 5 * (1.7)**n # CAN CHANGE
     current_exp += exp
-    while current_exp >= exp_needed and level < 25: #CAN CHANGE MAX LEVEL
+    while current_exp >= exp_needed and player_level < 25: #CAN CHANGE MAX LEVEL
         current_exp -= exp_needed
-        level += 1
-        exp_needed = 100 * (1.2 ** level) # CAN CHANGE
-    return level, round(current_exp), round(exp_needed)
+        player_level += 1
+        exp_needed = 100 * (1.2 ** player_level) # CAN CHANGE
+    return player_level, round(current_exp), round(exp_needed)
 
 # Display Level
 def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
-    global current_exp, level, exp_needed
-    level, current_exp, exp_needed = gain_exp(x, current_exp, level, exp_needed)
-    if level != 25: # CAN CHANGE MAX LEVEL
-        print(f"Level: {level}  EXP Needed: {current_exp}/{exp_needed}")
+    global current_exp, player_level, exp_needed
+    player_level, current_exp, exp_needed = gain_exp(x, current_exp, player_level, exp_needed)
+    if player_level != 25: # CAN CHANGE MAX LEVEL
+        print(f"Level: {player_level}  EXP Needed: {current_exp}/{exp_needed}")
     else:
         print("Level: 25 (MAX LEVEL)") # CAN CHANGE MAX LEVEL
 
@@ -36,10 +36,10 @@ monster_health = 0
 max_health = 15 # CAN CHANGE
 
 # Player Health calculation
-def player_health_display(level):
+def player_health_display(player_level):
     global player_health
     global max_health
-    player_health = 15 + (2 * (level - 1)) # CAN CHANGE
+    player_health = 15 + (2 * (player_level - 1)) # CAN CHANGE
     max_health = player_health
     return player_health
 
@@ -55,7 +55,7 @@ def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
 # Monster Health
 def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
     global monster_health
-    monster_health = 5 + (2 * (difficulty + level)) # CAN CHANGE
+    monster_health = 5 + (2 * (difficulty + player_level)) # CAN CHANGE
     return monster_health
 
 # Monster Damage Calculation
@@ -106,6 +106,7 @@ def time_elapsed():
     return time_format(play_time)
 
 #############################################  SKILLS  #############################################
+player_magicPoints = 0
 
 # SKILL SYSTEM
 
@@ -184,3 +185,13 @@ def gain_healOrb(n):
 def gain_magicPotion(n):
     global magicUpPotion
     magicUpPotion += n
+
+################################################ BATTLE SCREEN #################################################
+
+def display():
+    global player_health
+    global player_magicPoints
+    global player_level
+    return player_health, player_magicPoints, player_level
+
+    
