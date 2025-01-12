@@ -10,10 +10,10 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 grass = (34, 139, 34)
 
-x = 300
-y = 220
-dx = 500
-dy = 220
+x = 200
+y = 380
+dx = 400
+dy = 380
 speed = 5
 
 pygame.init()
@@ -311,7 +311,7 @@ while running:
         if direction != 'right':
             frame_count = 0
             direction = 'right'
-    elif keys[K_w] and y > 0:
+    elif keys[K_w] and y > 380:
         y -= speed
         moving = True
     elif keys[K_s] and y < 480:
