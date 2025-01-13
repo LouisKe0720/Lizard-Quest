@@ -62,14 +62,10 @@ flee_image = pygame.image.load('FLEE CHOICES.png')
 flee_success_image = pygame.image.load("FLEE SUCCESS.png")
 flee_fail_image = pygame.image.load("FLEE FAIL.png")
 
-
-
-
 #MUSIC START
 pygame.mixer.music.load("DQ Overture XI.mp3")
 pygame.mixer.music.set_volume(0.5) 
 pygame.mixer.music.play(-1)
-
 
 class FallingPixel:
     def __init__(self):
@@ -355,6 +351,9 @@ def show_skills_screen():
                 if gun_button.collidepoint(event.pos):
                     skills_opened = False
                     gun_used = 1
+                if magic_punch_button.collidepoint(event.pos):
+                    skills_opened = False
+                    magic_punch_used = 1
 
     while gun_used == 1:
         mechanics.use_gun()
@@ -367,8 +366,16 @@ def show_skills_screen():
         gun_used = 0
 
         pygame.display.update()
-                
-
+    
+    while magic_punch_used == 1:
+        mechanics.magic_punch()
+        pygame.display.update()
+        dialogue_order = 7
+        battle_dialogue()
+        mechanics.monster_attack()
+        dialogue_order = 4
+        battle_dialogue()
+        magic_punch_used = 0 
 
 def battle_dialogue():
     global dialogue_order
@@ -413,6 +420,16 @@ def battle_dialogue():
         pygame.display.flip()
         pygame.time.wait(2000)
         dialogue_order += 1
+    
+    if dialogue_order == 7:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used magic punch!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
 
 mechanics.start_stopwatch()  
 show_title_screen()
@@ -425,7 +442,6 @@ moving = False
 running = True
 start = False
 battle_screen_shown = False
-
 
 while running:
     for event in pygame.event.get():

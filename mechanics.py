@@ -120,12 +120,16 @@ def lizard_punch():
 
 # SKILL 3
 def magic_punch():
+    global player_magicPoints 
+    player_magicPoints -= 10
     monster_damage(15)
 
 # SKILL 4
 def heal_hp():
     global player_health
     global max_health
+    global player_magicPoints
+    player_magicPoints -= 10
     player_health += 15
     if player_health > max_health:
         player_health = max_health
