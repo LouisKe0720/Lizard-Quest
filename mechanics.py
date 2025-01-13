@@ -32,7 +32,7 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 #############################################  HEALTH SYSTEM  #############################################
 
 player_health = 15 # CAN CHANGE
-monster_health = 0
+monster_health = 30
 max_health = 15 # CAN CHANGE
 
 # Player Health calculation

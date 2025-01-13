@@ -354,6 +354,9 @@ def show_skills_screen():
                 if magic_punch_button.collidepoint(event.pos):
                     skills_opened = False
                     magic_punch_used = 1
+                if heal_hp_button.collidepoint(event.pos):
+                    skills_opened = False
+                    heal_hp_used = 1
 
     while gun_used == 1:
         mechanics.use_gun()
@@ -376,6 +379,18 @@ def show_skills_screen():
         dialogue_order = 4
         battle_dialogue()
         magic_punch_used = 0 
+        pygame.display.update()
+
+    while heal_hp_used == 1:
+        mechanics.heal_hp
+        pygame.display.update()
+        dialogue_order = 10
+        battle_dialogue()
+        mechanics.monster_attack()
+        dialogue_order = 4
+        battle_dialogue()
+        heal_hp_used = 0
+        pygame.display.update()
 
 def battle_dialogue():
     global dialogue_order
@@ -414,7 +429,7 @@ def battle_dialogue():
     if dialogue_order == 6:
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used your gun", True, black)
+        dialogue_text = font.render("You used your gun!", True, black)
         text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
         screen.blit(dialogue_text, text_rect.topleft)
         pygame.display.flip()
@@ -425,6 +440,16 @@ def battle_dialogue():
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
         dialogue_text = font.render("You used magic punch!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+
+    if dialogue_order == 10:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used heal hp!", True, black)
         text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
         screen.blit(dialogue_text, text_rect.topleft)
         pygame.display.flip()
