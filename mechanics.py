@@ -117,6 +117,8 @@ def use_gun(): # CAN CHANGE
 
 # SKILL 2
 def lizard_punch():
+    global player_health
+    player_health -= 10
     monster_damage(7)
     return 7
 
@@ -132,7 +134,7 @@ def heal_hp():
     global player_health
     global max_health
     global player_magicPoints
-    player_magicPoints -= 10
+    player_magicPoints -= 15
     player_health += 5
     if player_health > max_health:
         player_health = max_health
