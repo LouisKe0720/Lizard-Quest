@@ -34,6 +34,9 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 player_health = 15 # CAN CHANGE
 monster_health = 30
 max_health = 15 # CAN CHANGE
+min_player_health = 0
+min_monster_health = 0
+min_magic_points = 0
 
 # Player Health calculation
 def player_health_display(player_level):
@@ -118,16 +121,22 @@ def use_gun(): # CAN CHANGE
 # SKILL 2
 def lizard_punch():
     global player_health
+    global min_player_health
     player_health -= 10
+    if player_health < min_player_health:
+        player_health = min_player_health
     monster_damage(7)
-    return 7
+    return 7, player_health
 
 # SKILL 3
 def magic_punch():
     global player_magicPoints 
+    global min_magic_points
     player_magicPoints -= 10
+    if player_magicPoints < min_magic_points:
+        player_magicPoints = min_magic_points
     monster_damage(9)
-    return 9
+    return 9, player_magicPoints
 
 # SKILL 4
 def heal_hp():
