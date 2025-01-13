@@ -267,8 +267,10 @@ def default_battle_screen():
     player_magicpoint_text2 = font.render(player_magicPoints, True, black)
     player_level_text = font.render("LV:     " + player_level, True, black)
     screen.blit(battle_screen, (0, 0))
+
     pygame.draw.rect(screen, black, player_battle_rectangle_outline)
     pygame.draw.rect(screen, white, player_battle_rectangle)
+
     screen.blit(player_name_text, (10, 15))
     screen.blit(player_health_text, (10, 60))
     screen.blit(player_magicpoint_text, (10, 90))
@@ -306,7 +308,7 @@ def show_flee_screen():
                             pygame.time.wait(2000)
                             success_opened = False
                             flee_opened = False
-                            return False  # Return False to close the battle screen
+                            return False  
                     else:
                         fail_opened = True
                         while fail_opened:
@@ -346,6 +348,7 @@ def show_skills_screen():
     gun_used = 0
     magic_punch_used = 0
     heal_hp_used = 0
+    lizard_punch_used = 0
 
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
@@ -368,6 +371,9 @@ def show_skills_screen():
                 if magic_punch_button.collidepoint(event.pos):
                     skills_opened = False
                     magic_punch_used = 1
+                if lizard_punch_button.collidepoint(event.pos):
+                    skills_opened = False
+                    lizard_punch_used = 1
                 if heal_hp_button.collidepoint(event.pos):
                     skills_opened = False
                     heal_hp_used = 1
@@ -377,28 +383,52 @@ def show_skills_screen():
         gun_used = 0
     
     while magic_punch_used == 1:
-        mechanics.magic_punch()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 8
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
-        magic_punch_used = 0 
-        pygame.display.update()
+        magic_punch()
+        magic_punch_used = 0
 
+    while lizard_punch_used == 1:
+        lizard_punch()
+        lizard_punch_used = 0
+        
     while heal_hp_used == 1:
-        mechanics.heal_hp()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 10
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
+        heal_hp()
         heal_hp_used = 0
-        pygame.display.update()
+
+def heal_hp():
+    global dialogue_order
+    mechanics.heal_hp()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 10
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
+
+def lizard_punch():
+    global dialogue_order
+    mechanics.lizard_punch()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 12
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
+
+def magic_punch():
+    global dialogue_order
+    mechanics.magic_punch()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 8
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
 
 def gun_attack():
     global dialogue_order
@@ -478,6 +508,16 @@ def battle_dialogue():
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
         dialogue_text = font.render("You used heal hp!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+
+    if dialogue_order == 12:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used lizard punch!", True, black)
         text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
         screen.blit(dialogue_text, text_rect.topleft)
         pygame.display.flip()
