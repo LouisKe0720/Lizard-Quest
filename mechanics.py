@@ -31,9 +31,9 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 
 #############################################  HEALTH SYSTEM  #############################################
 
-player_health = 15 # CAN CHANGE
+player_health = 30 # CAN CHANGE
 monster_health = 30
-max_health = 15 # CAN CHANGE
+max_health = 30 # CAN CHANGE
 min_player_health = 0
 min_monster_health = 0
 min_magic_points = 0
@@ -42,7 +42,7 @@ min_magic_points = 0
 def player_health_display(player_level):
     global player_health
     global max_health
-    player_health = 15 + (2 * (player_level - 1)) # CAN CHANGE
+    player_health = 30 + (2 * (player_level - 1)) # CAN CHANGE
     max_health = player_health
     return player_health
 
