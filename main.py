@@ -365,16 +365,8 @@ def show_skills_screen():
                     heal_hp_used = 1
 
     while gun_used == 1:
-        mechanics.use_gun()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 6
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
+        gun_attack()
         gun_used = 0
-        pygame.display.update()
     
     while magic_punch_used == 1:
         mechanics.magic_punch()
@@ -403,6 +395,7 @@ def show_skills_screen():
 def gun_attack():
     global dialogue_order
     damage = mechanics.use_gun()
+    default_battle_screen()
 
     # Player attack text
     if damage < 10:

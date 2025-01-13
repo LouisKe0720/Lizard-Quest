@@ -134,10 +134,8 @@ def heal_hp():
     global player_magicPoints
     player_magicPoints -= 10
     player_health += 5
-    print(player_health)
     if player_health > max_health:
         player_health = max_health
-    print(player_health)
 
 # CAN ADD MORE SKILLS
 
