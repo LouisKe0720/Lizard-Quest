@@ -338,6 +338,7 @@ def show_skills_screen():
     gun_used = 0
     magic_punch_used = 0
     heal_hp_used = 0
+    lizard_punch_used = 0
 
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
@@ -372,40 +373,52 @@ def show_skills_screen():
         gun_used = 0
     
     while magic_punch_used == 1:
-        mechanics.magic_punch()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 8
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
-        magic_punch_used = 0 
-        pygame.display.update()
-    
+        magic_punch()
+        magic_punch_used = 0
+
     while lizard_punch_used == 1:
-        mechanics.lizard_punch()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 12
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
-        lizard_punch_used = 0 
-        pygame.display.update()
+        lizard_punch()
+        lizard_punch_used = 0
         
     while heal_hp_used == 1:
-        mechanics.heal_hp()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 10
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
+        heal_hp()
         heal_hp_used = 0
-        pygame.display.update()
+
+def heal_hp():
+    global dialogue_order
+    mechanics.heal_hp()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 10
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
+
+def lizard_punch():
+    global dialogue_order
+    mechanics.lizard_punch()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 12
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
+
+def magic_punch():
+    global dialogue_order
+    mechanics.magic_punch()
+    default_battle_screen()
+    pygame.display.update()
+    dialogue_order = 8
+    battle_dialogue()
+    mechanics.monster_attack()
+    dialogue_order = 4
+    battle_dialogue()
+    pygame.display.update()
 
 def gun_attack():
     global dialogue_order
