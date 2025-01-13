@@ -106,7 +106,7 @@ def time_elapsed():
     return time_format(play_time)
 
 #############################################  SKILLS  #############################################
-player_magicPoints = 0
+player_magicPoints = 25
 
 # SKILL SYSTEM
 
