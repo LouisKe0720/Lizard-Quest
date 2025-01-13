@@ -370,7 +370,7 @@ def show_skills_screen():
     while magic_punch_used == 1:
         mechanics.magic_punch()
         pygame.display.update()
-        dialogue_order = 7
+        dialogue_order = 8
         battle_dialogue()
         mechanics.monster_attack()
         dialogue_order = 4
@@ -421,7 +421,7 @@ def battle_dialogue():
         pygame.time.wait(2000)
         dialogue_order += 1
     
-    if dialogue_order == 7:
+    if dialogue_order == 8:
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
         dialogue_text = font.render("You used magic punch!", True, black)
