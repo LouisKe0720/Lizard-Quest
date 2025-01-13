@@ -357,6 +357,7 @@ def show_skills_screen():
     magic_punch_used = 0
     heal_hp_used = 0
     lizard_punch_used = 0
+    mp_dialogue = 0
 
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
@@ -379,7 +380,7 @@ def show_skills_screen():
                 if magic_punch_button.collidepoint(event.pos):
                     if int(player_magicPoints) < 10:
                         skills_opened = False
-                        dialogue_format("Not enough MP!")
+                        mp_dialogue = 1
                     else:
                         skills_opened = False
                         magic_punch_used = 1
@@ -387,8 +388,12 @@ def show_skills_screen():
                     skills_opened = False
                     lizard_punch_used = 1
                 if heal_hp_button.collidepoint(event.pos):
-                    skills_opened = False
-                    heal_hp_used = 1
+                    if int(player_magicPoints) < 15:
+                        skills_opened = False
+                        mp_dialogue = 1
+                    else:
+                        skills_opened = False
+                        heal_hp_used = 1
 
     while gun_used == 1:
         gun_attack()
@@ -406,126 +411,93 @@ def show_skills_screen():
         heal_hp()
         heal_hp_used = 0
 
+    while mp_dialogue == 1:
+        default_battle_screen()
+        dialogue_format("Not enough MP!")
+        mp_dialogue = 0
+
 def heal_hp():
     global dialogue_order
-    mechanics.heal_hp()
+    heal = mechanics.heal_hp()
     default_battle_screen()
     pygame.display.update()
     dialogue_order = 10
     battle_dialogue()
-    mechanics.monster_attack()
-    dialogue_order = 4
-    battle_dialogue()
-    pygame.display.update()
+    dialogue_format("You healed for " + str(heal) + " hp!")
+    monster_turn()
 
 def lizard_punch():
-    global dialogue_order
-    mechanics.lizard_punch()
-    default_battle_screen()
-    pygame.display.update()
-    dialogue_order = 12
-    battle_dialogue()
-    mechanics.monster_attack()
-    dialogue_order = 4
-    battle_dialogue()
-    pygame.display.update()
+    damage = mechanics.lizard_punch()
+    player_turn(damage, 12)
+    dialogue_format("You lost 10 hp!")
+    monster_turn()
 
 def magic_punch():
-    global dialogue_order
-    mechanics.magic_punch()
-    default_battle_screen()
-    pygame.display.update()
-    dialogue_order = 8
-    battle_dialogue()
-    mechanics.monster_attack()
-    dialogue_order = 4
-    battle_dialogue()
-    pygame.display.update()
+    damage = mechanics.magic_punch()
+    player_turn(damage, 8)
+    monster_turn()
 
 def gun_attack():
-    global dialogue_order
     damage = mechanics.use_gun()
-    default_battle_screen()
+    player_turn(damage, 4)
+    monster_turn()
 
-    # Player attack text
+def player_turn(damage, x):
+    global dialogue_order
+    default_battle_screen()
     if damage < 10:
         damage = "00" + str(damage)
     monster_lost_health_text = font2.render("- " + damage, True, white)
     text_x = enemy.rect.centerx / 2 + 15
-    print(text_x)
     text_y = enemy.rect.top - 115
-    print(text_y)
     screen.blit(monster_lost_health_text, (text_x, text_y))
-
-    # Monster attack
-    dialogue_order = 6
+    dialogue_order = x
+    attack_sound()
     battle_dialogue()
+    
+
+def monster_turn():
+    global dialogue_order
     default_battle_screen()
     monster_damage = mechanics.monster_attack()
     dialogue_order = 4
+    take_damage_sound()
     battle_dialogue()
+    dialogue_format("You lost " + str(monster_damage) + " hp!")
+    mechanics.regen_mp()
+    default_battle_screen()
+
+def attack_sound():
+    sound = pygame.mixer.Sound("DQ Attack.mp3")
+    sound.play()
+
+def attack_sound2():
+    sound = pygame.mixer.Sound("DQ Spell.mp3")
+    sound.play()
+
+def take_damage_sound():
+    sound = pygame.mixer.Sound("DQ Take Dmg.mp3")
+    sound.play()
 
 def battle_dialogue():
     global dialogue_order
     if dialogue_order == 1:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You encountered a mutant!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You encountered a mutant!")
 
     if dialogue_order == 2:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("What do you want to do?", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("What do you want to do?")
 
     if dialogue_order == 4:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("The mutant punched you", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("The mutant attacked you!")
 
     if dialogue_order == 6:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used your gun!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used your gun!")
     
     if dialogue_order == 8:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used magic punch!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used magic punch!")
 
     if dialogue_order == 10:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used heal hp!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used heal!")
 
     if dialogue_order == 12:
         dialogue_format("You used lizard punch!")
@@ -538,7 +510,7 @@ def dialogue_format(text):
     text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
     screen.blit(dialogue_text, text_rect.topleft)
     pygame.display.flip()
-    pygame.time.wait(2000)
+    pygame.time.wait(1250)
     dialogue_order += 1
 
 def show_dialogue_box():

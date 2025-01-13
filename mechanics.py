@@ -34,9 +34,6 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 player_health = 30
 monster_health = 30
 max_health = 30 
-min_player_health = 0
-min_monster_health = 0
-min_magic_points = 0
 
 # Player Health calculation
 def player_health_display(player_level):
@@ -109,14 +106,14 @@ def use_gun():
 def lizard_punch():
     global player_health
     player_health -= 10
-    monster_damage(7)
+    monster_damage(6)
     return 7
 
 # SKILL 3
 def magic_punch():
     global player_magicPoints 
     player_magicPoints -= 10
-    monster_damage(9)
+    monster_damage(6)
     return 9
 
 # SKILL 4
@@ -125,10 +122,21 @@ def heal_hp():
     global max_health
     global player_magicPoints
     player_magicPoints -= 15
-    player_health += 5
-    if player_health > max_health:
-        player_health = max_health
+    heal_amount = random.randint(5, 10)
+    if player_health + heal_amount >= max_health:
+        heal_amount2 = max_health - player_health
+    else:
+        player_health += heal_amount
+        heal_amount2 = heal_amount
+    return heal_amount2
 
+def regen_mp():
+    global player_magicPoints
+    player_magicPoints += 5
+    regen_amount = random.randint(5, 10)
+    if player_magicPoints > 25:
+        player_magicPoints = 25
+    return
 
 #############################################  MONSTER ATTACKS  #############################################
 
