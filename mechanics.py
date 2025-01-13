@@ -106,21 +106,24 @@ def time_elapsed():
     return time_format(play_time)
 
 #############################################  SKILLS  #############################################
-player_magicPoints = 0
+player_magicPoints = 10
 
 # SKILL SYSTEM
 
 # SKILL 1
 def use_gun(): # CAN CHANGE
-    monster_damage(4)
+    monster_damage(3)
+    return 3
 
 # SKILL 2
 def lizard_punch():
-    monster_damage(10)
+    monster_damage(7)
+    return 7
 
 # SKILL 3
 def magic_punch():
-    monster_damage(15)
+    monster_damage(8)
+    return 8
 
 # SKILL 4
 def heal_hp():
@@ -135,27 +138,31 @@ def heal_hp():
 #############################################  MONSTER ATTACKS  #############################################
 
 def monster_attack1():
-    player_damage(2)
+    player_damage(1)
+    return 1
 
 def monster_attack2():
-    player_damage(3)
+    player_damage(2)
+    return 2
 
 def monster_attack3():
-    player_damage(4)
+    player_damage(3)
+    return 3
 
 def monster_attack4():
-    player_damage(5)
+    player_damage(4)
+    return 4
 
 def monster_attack():
     randomMonsterAttack = random.randint(1, 4)
     if randomMonsterAttack == 1:
-        monster_attack1()
+        return monster_attack1()
     elif randomMonsterAttack == 2:
-        monster_attack2()
+        return monster_attack2()
     elif randomMonsterAttack == 3:
-        monster_attack3()
+        return monster_attack3()
     elif randomMonsterAttack == 4:
-        monster_attack4()
+        return monster_attack4()
 
 ############################################### ITEMS #############################################
 
