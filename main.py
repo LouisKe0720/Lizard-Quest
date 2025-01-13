@@ -43,6 +43,10 @@ items_button = pygame.Rect(5, 330, 110, 40)
 flee_button = pygame.Rect(5, 373, 110, 40)
 yes_button = pygame.Rect(140, 358, 130, 60)
 no_button = pygame.Rect(280, 358, 130, 60)
+gun_button = pygame.Rect(135, 285, 270, 30)
+lizard_punch_button = pygame.Rect(135, 315, 270, 30)
+magic_punch_button = pygame.Rect(135, 350, 270, 30)
+heal_hp_button = pygame.Rect(135, 390, 270, 30)
 
 # Load battle screen images
 battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
@@ -203,6 +207,8 @@ def show_time_rectangle():
         clock.tick(60)
 
 def show_battle_screen():
+    global dialogue_order
+    dialogue_order = 1
     defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
     waiting = True
     while waiting:
@@ -216,14 +222,17 @@ def show_battle_screen():
                 elif items_button.collidepoint(event.pos):
                     show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion)
                 elif flee_button.collidepoint(event.pos):
-                    if not show_flee_screen():  # Check if flee returns False
+                    if not show_flee_screen():
                         waiting = False
+
         draw_buttons()
+
         screen.blit(battle_screen, (0, 0))
         player_battle_rectangle = pygame.Rect(5, 5, 150, 150)
         player_battle_rectangle_outline = pygame.Rect(0, 0, 160, 160)
         pygame.draw.rect(screen, black, player_battle_rectangle_outline)
         pygame.draw.rect(screen, white, player_battle_rectangle)
+
         player_health, player_magicPoints, player_level = mechanics.display()
         if player_health < 100:
             player_health = "0" + str(player_health)
@@ -235,20 +244,27 @@ def show_battle_screen():
             player_level = "0" + str(player_level)
             if int(player_level) < 10:
                 player_level = "0" + str(player_level)
+
         player_name_text = player_name = font.render("     YOU", True, black)
         player_health_text = font.render("HP:    " + player_health, True, black)
         player_magicpoint_text = font.render("MP:", True, black)
         player_magicpoint_text2 = font.render(player_magicPoints, True, black)
         player_level_text = font.render("LV:     " + player_level, True, black)
+
+        # Character Description Display
         screen.blit(player_name_text, (10, 15))
         screen.blit(player_health_text, (10, 60))
         screen.blit(player_magicpoint_text, (10, 90))
         screen.blit(player_level_text, (10, 120))
         screen.blit(player_magicpoint_text2, (91, 90))
+
+        # Enemy 
         enemy = mutant
-        enemy.image = pygame.transform.scale(enemy.image, (150, 150))
-        screen.blit(enemy.image, (screen_width /2 - 70, screen_height / 2 - 100))
+        enemy.image = pygame.transform.scale(enemy.image, (200, 200))
+        screen.blit(enemy.image, (screen_width / 2 - 100, screen_height / 2 - 150))
+        battle_dialogue()
         pygame.display.update()
+
 def draw_buttons():
     pygame.draw.rect(screen, white, skill_button)
     pygame.draw.rect(screen, white, items_button)
@@ -257,8 +273,8 @@ def draw_buttons():
 def show_flee_screen():
     flee_opened = True
     while flee_opened:
-        pygame.draw.rect(screen, (0, 255, 0), yes_button)
-        pygame.draw.rect(screen, (255, 0, 0), no_button)
+        pygame.draw.rect(screen, white, yes_button)
+        pygame.draw.rect(screen, white, no_button)
         screen.blit(flee_image, (0, 0))
         pygame.display.flip()
         clock.tick(60)
@@ -316,6 +332,10 @@ def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
 def show_skills_screen():
     skills_opened = True
     while skills_opened:
+        pygame.draw.rect(screen, white, gun_button)
+        pygame.draw.rect(screen, white, lizard_punch_button)
+        pygame.draw.rect(screen, white, magic_punch_button)
+        pygame.draw.rect(screen, white, heal_hp_button)
         screen.blit(skills_image, (0, 0))
         pygame.display.flip()
         clock.tick(60)
@@ -326,6 +346,29 @@ def show_skills_screen():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if skill_button.collidepoint(event.pos) or items_button.collidepoint(event.pos) or flee_button.collidepoint(event.pos):
                     skills_opened = False
+
+def battle_dialogue():
+    global dialogue_order
+    dialogueBox = pygame.Rect(135, 300, 440, 100)
+    dialogueBoxOutline = pygame.Rect(130, 295, 450, 110)
+    if dialogue_order == 1:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You encountered a mutant!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+    if dialogue_order == 2:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("What do you want to do?", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
 
 mechanics.start_stopwatch()  
 show_title_screen()
@@ -413,7 +456,6 @@ while running:
         pygame.mixer.music.load("DQ Adventure Theme.mp3")
         pygame.mixer.music.play(-1)
         speed = 5
-
 
     pygame.display.flip()
     clock.tick(60)
