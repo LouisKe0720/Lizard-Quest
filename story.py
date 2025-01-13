@@ -525,6 +525,8 @@ def dialogue(text, text_x, text_y):
 mechanics.start_stopwatch()  
 show_title_screen()
 show_start_screen()
+time.sleep(1)
+show_dialogue_box()
 pygame.mixer.music.load("DQ Adventure Theme.mp3")
 pygame.mixer.music.play(-1)
 
