@@ -230,7 +230,6 @@ def show_battle_screen():
 
         draw_buttons()
 
-        
         # Character Description Formating
         player_health, player_magicPoints, player_level = mechanics.display()
         if player_health < 100:
