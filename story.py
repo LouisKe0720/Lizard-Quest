@@ -40,10 +40,8 @@ class ImageSprite(Sprite):
     def update(self, x, y):
         self.rect.center = (x, y)
 
-mutants = [ImageSprite('MUTANT 1.png'), ImageSprite('MUTANT 2.png'), ImageSprite('MUTANT 3.png'), ImageSprite('MUTANT 4.png'),
-           ImageSprite('MUTANT 5.png'), ImageSprite('MUTANT 6.png'), ImageSprite('MUTANT 7.png')]
-
-mutant = random.choice(mutants)
+mother = ImageSprite('PIXEL TEST F1.png')
+mother_s = pygame.image.load('PIXEL TEST F1.png')
 frame_1 = ImageSprite('PIXEL TEST F1.png')
 frame_2 = ImageSprite('PIXEL TEST F2.png')
 frame_3 = ImageSprite('PIXEL TEST F3.png')
@@ -59,8 +57,8 @@ frame_num = 0
 frame_count = 0
 frame_change = 5
 
-sprite = frame_1
-sprite_group = Group(sprite, mutant)
+sprite = frame_1gn
+sprite_group = Group(sprite, mother)
 
 def show_title_screen():
     title_image = pygame.image.load('LQ TITLE SCREEN.png')
@@ -173,12 +171,6 @@ def dialogue(text, text_x, text_y):
     rendered_text = font.render(text, True, white)
     screen.blit(rendered_text, (text_x, text_y))
 
-mechanics.start_stopwatch()
-show_title_screen()
-show_start_screen()
-time.sleep(2)
-show_dialogue_box()
-
 direction = None
 moving = False
 running = True
@@ -191,6 +183,8 @@ text = ""
 first_s = True
 sec_s = False
 cave_cg = False
+story_ms = True
+cave_s = False
 
 battle_screen = pygame.image.load("BASE BATTLE SCREEN.png")
 battle_screen = pygame.transform.scale(battle_screen, (screen_width, screen_height))
@@ -199,6 +193,14 @@ dialogue_box = pygame.image.load("DIALOGUE BOX 1.png")
 dialogue_box = pygame.transform.scale(dialogue_box, (screen_width, screen_height))
 
 black_bg = pygame.image.load("BLACK BG.png")
+
+mechanics.start_stopwatch()
+show_title_screen()
+show_start_screen()
+time.sleep(1)
+show_dialogue_box()
+pygame.mixer.music.load("DQ11 Stake My Life On It.mp3")
+pygame.mixer.music.play(-1)
 
 while running:
     for event in pygame.event.get():
@@ -242,7 +244,7 @@ while running:
         while cg1_show and text_num < len(texts):
                     screen.blit(battle_cg, (0, 0))
                     screen.blit(dialogue_box, (0, 0))
-                    dialogue(texts[text_num], texts_x[text_num], 402)
+                    dialogue(texts[text_num], texts_x[text_num], 403)
                     pygame.display.update()
 
                     for event in pygame.event.get():
@@ -256,22 +258,22 @@ while running:
                                 cg1_show = False
                                 cg1 = False
                                 cg2 = True
+                                sec_s = True
                                 show_cg(spark_cg)
                                 cg2_show = True
-                                sec_s = True
                                 text2_num = 0
         
     if cg2 == True:
             if sec_s == True:
                 screen.blit(spark_cg, (0, 0))
                 screen.blit(dialogue_box, (0, 0))
-                dialogue("*BANG*", 240, 400)
+                dialogue("*BANG*", 240, 402)
+                pygame.display.update()
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     sec_s = False
                     text2_num = 0
@@ -293,7 +295,7 @@ while running:
                                 if text2_num >= len(texts):
                                     cg2_show = False
                                     cg2 = False
-                        
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -325,21 +327,51 @@ while running:
         if frame_count >= frame_change:
             frame_count = 0
             frame_num = (frame_num + 1) % len(frames)
-            sprite.image = frames[frame_num].image
+            sprite.image = framesgn[frame_num].image
             if direction == 'left':
                 if frame_num != 0:
                     sprite.image = pygame.transform.flip(sprite.image, True, False)
                 else:
-                    sprite.image = frames[frame_num].image
+                    sprite.image = framesgn[frame_num].image
             else:
-                sprite.image = frames[frame_num].image
+                sprite.image = framesgn[frame_num].image
 
     sprite.update(x, y)
-    mutant.update(dx, dy)
+    mother.update(dx, dy)
 
     screen.fill(white)
     screen.blit(cave_bg, (0,0))
     sprite_group.draw(screen)
+
+    if sprite.rect.colliderect(mother.rect):
+        cave_cg = True
+        cave_s = True
+
+    if cave_cg == True:    
+        screen.blit(cave_bg, (0, 0))
+        screen.blit(mother_s, (dx, dy))
+        screen.blit(dialogue_box, (0, 0))
+
+        textc_num = 0
+        texts_c = ["MC: ...!", "Motherly lizard: You’re up!"]
+        textsc_x = [250, 190]
+
+        while cave_cg and textc_num < len(texts_c):
+            screen.blit(mother_s, (dx, dy))
+            screen.blit(dialogue_box, (0, 0))
+            dialogue(texts_c[textc_num], textsc_x[textc_num], 402)
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+            
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    textc_num += 1
+                    if textc_num >= len(texts_c):
+                        cave_cg = False 
+
 
     pygame.display.update()
     
