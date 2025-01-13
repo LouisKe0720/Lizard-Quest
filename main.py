@@ -74,7 +74,6 @@ pygame.mixer.music.load("DQ Overture XI.mp3")
 pygame.mixer.music.set_volume(0.5) 
 pygame.mixer.music.play(-1)
 
-
 class FallingPixel:
     def __init__(self):
         self.x = random.randint(0, screen_width)
@@ -417,7 +416,27 @@ def battle_dialogue():
     if dialogue_order == 6:
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used your gun", True, black)
+        dialogue_text = font.render("You used your gun!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+    
+    if dialogue_order == 8:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used magic punch!", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+
+    if dialogue_order == 10:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used heal hp!", True, black)
         text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
         screen.blit(dialogue_text, text_rect.topleft)
         pygame.display.flip()
@@ -435,7 +454,6 @@ moving = False
 running = True
 start = False
 battle_screen_shown = False
-
 
 while running:
     for event in pygame.event.get():

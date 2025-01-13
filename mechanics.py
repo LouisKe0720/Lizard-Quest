@@ -32,7 +32,7 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 #############################################  HEALTH SYSTEM  #############################################
 
 player_health = 15 # CAN CHANGE
-monster_health = 0
+monster_health = 30
 max_health = 15 # CAN CHANGE
 
 # Player Health calculation
@@ -106,7 +106,7 @@ def time_elapsed():
     return time_format(play_time)
 
 #############################################  SKILLS  #############################################
-player_magicPoints = 10
+player_magicPoints = 25
 
 # SKILL SYSTEM
 
@@ -122,13 +122,16 @@ def lizard_punch():
 
 # SKILL 3
 def magic_punch():
-    monster_damage(8)
-    return 8
+    global player_magicPoints 
+    player_magicPoints -= 10
+    monster_damage(15)
 
 # SKILL 4
 def heal_hp():
     global player_health
     global max_health
+    global player_magicPoints
+    player_magicPoints -= 10
     player_health += 15
     if player_health > max_health:
         player_health = max_health
