@@ -31,9 +31,9 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
 
 #############################################  HEALTH SYSTEM  #############################################
 
-player_health = 30 # CAN CHANGE
+player_health = 30
 monster_health = 30
-max_health = 30 # CAN CHANGE
+max_health = 30 
 min_player_health = 0
 min_monster_health = 0
 min_magic_points = 0
@@ -42,7 +42,7 @@ min_magic_points = 0
 def player_health_display(player_level):
     global player_health
     global max_health
-    player_health = 30 + (2 * (player_level - 1)) # CAN CHANGE
+    player_health = 31 + (2 * (player_level - 1)) # CAN CHANGE
     max_health = player_health
     return player_health
 
@@ -50,10 +50,7 @@ def player_health_display(player_level):
 def player_damage(damage): #TAKES IN AN ATTACK DAMAGE
     global player_health
     player_health -= damage
-    if player_health <= 0:
-        #PLACEHOLDER
-        # TRY AGAIN SCREEN
-        return 
+    return 
 
 # Monster Health
 def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
@@ -65,17 +62,7 @@ def monster_health_display(difficulty): #DIFFICULTY OF THE MONSTER
 def monster_damage(damage): #TAKES IN AN ATTACK DAMAGE
     global monster_health
     monster_health -= damage
-    if monster_health <= 0:
-        # PLACEHOLDER
-        # MONSTER DEFEATED SCREEN
-        return
-    
-# AUTO HEAL?
-def auto_heal(): # CAN ADD TIME TO THIS
-    global player_health
-    player_health += 1 # CAN CHANGE HOW MUCH TO HEAL
-    if player_health > max_health:
-        player_health = max_health 
+    return
     
 #############################################  TIME  #############################################
 
@@ -114,29 +101,23 @@ player_magicPoints = 25
 # SKILL SYSTEM
 
 # SKILL 1
-def use_gun(): # CAN CHANGE
+def use_gun():
     monster_damage(3)
     return 3
 
 # SKILL 2
 def lizard_punch():
     global player_health
-    global min_player_health
     player_health -= 10
-    if player_health < min_player_health:
-        player_health = min_player_health
     monster_damage(7)
-    return 7, player_health
+    return 7
 
 # SKILL 3
 def magic_punch():
     global player_magicPoints 
-    global min_magic_points
     player_magicPoints -= 10
-    if player_magicPoints < min_magic_points:
-        player_magicPoints = min_magic_points
     monster_damage(9)
-    return 9, player_magicPoints
+    return 9
 
 # SKILL 4
 def heal_hp():
@@ -148,7 +129,6 @@ def heal_hp():
     if player_health > max_health:
         player_health = max_health
 
-# CAN ADD MORE SKILLS
 
 #############################################  MONSTER ATTACKS  #############################################
 
@@ -214,6 +194,7 @@ def display():
     global player_health
     global player_magicPoints
     global player_level
-    return player_health, player_magicPoints, player_level
+    global monster_health
+    return player_health, player_magicPoints, player_level, monster_health
 
     

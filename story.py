@@ -248,13 +248,20 @@ def show_battle_screen():
 
 def default_battle_screen():
     # Character Description Formating
-    player_health, player_magicPoints, player_level = mechanics.display()
+    global player_health, player_magicPoints, player_level, monster_health
+    player_health, player_magicPoints, player_level, monster_health = mechanics.display()
     if player_health < 100:
         player_health = "0" + str(player_health)
-    if player_magicPoints < 100:
-        player_magicPoints = "0" + str(player_magicPoints)
-        if int(player_magicPoints) < 10:
+        if int(player_health) == 0:
+            player_health = "0" + str(player_health)
+    if player_magicPoints < 0:
+        player_magicPoints = "000" 
+    else:
+        if player_magicPoints < 100:
             player_magicPoints = "0" + str(player_magicPoints)
+            if int(player_magicPoints) < 10:
+                player_magicPoints = "0" + str(player_magicPoints)
+
     if player_level < 100:
         player_level = "0" + str(player_level)
         if int(player_level) < 10:
@@ -276,7 +283,7 @@ def default_battle_screen():
     screen.blit(player_magicpoint_text, (10, 90))
     screen.blit(player_level_text, (10, 120))
     screen.blit(player_magicpoint_text2, (91, 90))
-    screen.blit(enemy.image, (screen_width / 2 - 100, screen_height / 2 - 150))
+    screen.blit(enemy.image, (screen_width / 2 - 80, screen_height / 2 - 150))
 
 def draw_buttons():
     pygame.draw.rect(screen, white, skill_button)
@@ -345,6 +352,7 @@ def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
 def show_skills_screen():
     skills_opened = True
     global dialogue_order
+    global player_magicPoints
     gun_used = 0
     magic_punch_used = 0
     heal_hp_used = 0
@@ -369,8 +377,12 @@ def show_skills_screen():
                     skills_opened = False
                     gun_used = 1
                 if magic_punch_button.collidepoint(event.pos):
-                    skills_opened = False
-                    magic_punch_used = 1
+                    if int(player_magicPoints) < 10:
+                        skills_opened = False
+                        dialogue_format("Not enough MP!")
+                    else:
+                        skills_opened = False
+                        magic_punch_used = 1
                 if lizard_punch_button.collidepoint(event.pos):
                     skills_opened = False
                     lizard_punch_used = 1
@@ -439,15 +451,16 @@ def gun_attack():
     if damage < 10:
         damage = "00" + str(damage)
     monster_lost_health_text = font2.render("- " + damage, True, white)
-    text_x = enemy.rect.centerx / 2 - 10
+    text_x = enemy.rect.centerx / 2 + 15
     print(text_x)
-    text_y = enemy.rect.top - 100
+    text_y = enemy.rect.top - 115
     print(text_y)
     screen.blit(monster_lost_health_text, (text_x, text_y))
 
     # Monster attack
     dialogue_order = 6
     battle_dialogue()
+    default_battle_screen()
     monster_damage = mechanics.monster_attack()
     dialogue_order = 4
     battle_dialogue()
@@ -515,14 +528,18 @@ def battle_dialogue():
         dialogue_order += 1
 
     if dialogue_order == 12:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used lizard punch!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used lizard punch!")
+
+def dialogue_format(text):
+    global dialogue_order
+    pygame.draw.rect(screen, black, dialogueBoxOutline)
+    pygame.draw.rect(screen, white, dialogueBox)
+    dialogue_text = font.render(text, True, black)
+    text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+    screen.blit(dialogue_text, text_rect.topleft)
+    pygame.display.flip()
+    pygame.time.wait(2000)
+    dialogue_order += 1
 
 def show_dialogue_box():
     dialogue_box = pygame.image.load("DIALOGUE BOX 1.png")
