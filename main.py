@@ -230,26 +230,6 @@ def show_battle_screen():
 
         draw_buttons()
 
-        # Character Description Formating
-        player_health, player_magicPoints, player_level = mechanics.display()
-        if player_health < 100:
-            player_health = "0" + str(player_health)
-        if player_magicPoints < 100:
-            player_magicPoints = "0" + str(player_magicPoints)
-            if int(player_magicPoints) < 10:
-                player_magicPoints = "0" + str(player_magicPoints)
-        if player_level < 100:
-            player_level = "0" + str(player_level)
-            if int(player_level) < 10:
-                player_level = "0" + str(player_level)
-
-        # Character Description Text
-        player_name_text = player_name = font.render("     YOU", True, black)
-        player_health_text = font.render("HP:    " + player_health, True, black)
-        player_magicpoint_text = font.render("MP:", True, black)
-        player_magicpoint_text2 = font.render(player_magicPoints, True, black)
-        player_level_text = font.render("LV:     " + player_level, True, black)
-
         # Enemy 
         global enemy
         enemy = mutant
@@ -259,6 +239,25 @@ def show_battle_screen():
         pygame.display.update()
 
 def default_battle_screen():
+    # Character Description Formating
+    player_health, player_magicPoints, player_level = mechanics.display()
+    if player_health < 100:
+        player_health = "0" + str(player_health)
+    if player_magicPoints < 100:
+        player_magicPoints = "0" + str(player_magicPoints)
+        if int(player_magicPoints) < 10:
+            player_magicPoints = "0" + str(player_magicPoints)
+    if player_level < 100:
+        player_level = "0" + str(player_level)
+        if int(player_level) < 10:
+            player_level = "0" + str(player_level)
+
+    # Character Description Text
+    player_name_text = player_name = font.render("     YOU", True, black)
+    player_health_text = font.render("HP:    " + player_health, True, black)
+    player_magicpoint_text = font.render("MP:", True, black)
+    player_magicpoint_text2 = font.render(player_magicPoints, True, black)
+    player_level_text = font.render("LV:     " + player_level, True, black)
     screen.blit(battle_screen, (0, 0))
     pygame.draw.rect(screen, black, player_battle_rectangle_outline)
     pygame.draw.rect(screen, white, player_battle_rectangle)
@@ -337,6 +336,9 @@ def show_skills_screen():
     skills_opened = True
     global dialogue_order
     gun_used = 0
+    magic_punch_used = 0
+    heal_hp_used = 0
+
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
         pygame.draw.rect(screen, white, lizard_punch_button)
@@ -364,6 +366,7 @@ def show_skills_screen():
 
     while gun_used == 1:
         mechanics.use_gun()
+        default_battle_screen()
         pygame.display.update()
         dialogue_order = 6
         battle_dialogue()
@@ -375,6 +378,7 @@ def show_skills_screen():
     
     while magic_punch_used == 1:
         mechanics.magic_punch()
+        default_battle_screen()
         pygame.display.update()
         dialogue_order = 8
         battle_dialogue()
@@ -386,6 +390,7 @@ def show_skills_screen():
 
     while heal_hp_used == 1:
         mechanics.heal_hp()
+        default_battle_screen()
         pygame.display.update()
         dialogue_order = 10
         battle_dialogue()
