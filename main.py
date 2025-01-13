@@ -227,12 +227,14 @@ def show_battle_screen():
 
         draw_buttons()
 
+        # Battle Screen
         screen.blit(battle_screen, (0, 0))
         player_battle_rectangle = pygame.Rect(5, 5, 150, 150)
         player_battle_rectangle_outline = pygame.Rect(0, 0, 160, 160)
         pygame.draw.rect(screen, black, player_battle_rectangle_outline)
         pygame.draw.rect(screen, white, player_battle_rectangle)
 
+        # Character Description Formating
         player_health, player_magicPoints, player_level = mechanics.display()
         if player_health < 100:
             player_health = "0" + str(player_health)
@@ -245,6 +247,7 @@ def show_battle_screen():
             if int(player_level) < 10:
                 player_level = "0" + str(player_level)
 
+        # Character Description Text
         player_name_text = player_name = font.render("     YOU", True, black)
         player_health_text = font.render("HP:    " + player_health, True, black)
         player_magicpoint_text = font.render("MP:", True, black)
@@ -264,6 +267,7 @@ def show_battle_screen():
         screen.blit(enemy.image, (screen_width / 2 - 100, screen_height / 2 - 150))
         battle_dialogue()
         pygame.display.update()
+
 
 def draw_buttons():
     pygame.draw.rect(screen, white, skill_button)
@@ -331,6 +335,8 @@ def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
 
 def show_skills_screen():
     skills_opened = True
+    global dialogue_order
+    gun_used = 0
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
         pygame.draw.rect(screen, white, lizard_punch_button)
@@ -346,6 +352,23 @@ def show_skills_screen():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if skill_button.collidepoint(event.pos) or items_button.collidepoint(event.pos) or flee_button.collidepoint(event.pos):
                     skills_opened = False
+                if gun_button.collidepoint(event.pos):
+                    skills_opened = False
+                    gun_used = 1
+
+    while gun_used == 1:
+        mechanics.use_gun()
+        pygame.display.update()
+        dialogue_order = 6
+        battle_dialogue()
+        mechanics.monster_attack()
+        dialogue_order = 4
+        battle_dialogue()
+        gun_used = 0
+
+        pygame.display.update()
+                
+
 
 def battle_dialogue():
     global dialogue_order
@@ -360,10 +383,31 @@ def battle_dialogue():
         pygame.display.flip()
         pygame.time.wait(2000)
         dialogue_order += 1
+
     if dialogue_order == 2:
         pygame.draw.rect(screen, black, dialogueBoxOutline)
         pygame.draw.rect(screen, white, dialogueBox)
         dialogue_text = font.render("What do you want to do?", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+
+    if dialogue_order == 4:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("The mutant punched you", True, black)
+        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+        screen.blit(dialogue_text, text_rect.topleft)
+        pygame.display.flip()
+        pygame.time.wait(2000)
+        dialogue_order += 1
+
+    if dialogue_order == 6:
+        pygame.draw.rect(screen, black, dialogueBoxOutline)
+        pygame.draw.rect(screen, white, dialogueBox)
+        dialogue_text = font.render("You used your gun", True, black)
         text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
         screen.blit(dialogue_text, text_rect.topleft)
         pygame.display.flip()
