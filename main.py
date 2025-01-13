@@ -385,7 +385,7 @@ def show_skills_screen():
         pygame.display.update()
 
     while heal_hp_used == 1:
-        mechanics.heal_hp
+        mechanics.heal_hp()
         pygame.display.update()
         dialogue_order = 10
         battle_dialogue()
