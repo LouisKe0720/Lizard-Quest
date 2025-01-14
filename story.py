@@ -833,7 +833,7 @@ while running:
                 pixel_falling = True
                 num_pixels = 37
                 mechanics.player_health = 30
-                mechanics.monster_health = 3
+                mechanics.monster_health = 30
     
             battle_screen_shown = False
             pygame.mixer.music.load("DQ Adventure Theme.mp3")
