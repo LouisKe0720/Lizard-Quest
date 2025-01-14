@@ -740,8 +740,7 @@ while running:
             "Motherly lizard: Oh, and carry this rifle with you.", "Rifle gained!", "Motherly lizard: …", "MC: …",
             "Motherly lizard: …I hope we can finally avenge those","Motherly Lizard: who fought for us to live here today.", "MC: Of course… that is the sole reason I am doing this.",
             "MC: See you after all of this ends, mum.", "MC: I will make sure that everything ends just the way Dad would’ve wanted."]
-        textsc_x = [258, 168, 135, 258, 48, 220, 90, 258, 70, 50, 140, 85, 117, 91, 130, 142, 100, 258, 240, 130, 130, 160, 150, 240, 240, 258, 130, 140, 130, 120, 120, 40]
-
+        textsc_x = [258, 168, 140, 258, 48, 230, 90, 258, 70, 50, 120, 60, 80, 91, 100, 125, 100, 258, 240, 120, 130, 160, 120, 240, 240, 258, 130, 140, 130, 120, 100, 40]
         while cave_cg and textc_num < len(texts_c):
             screen.blit(dialogue_box, (0, 0))
             dialogue(texts_c[textc_num], textsc_x[textc_num], 402)
