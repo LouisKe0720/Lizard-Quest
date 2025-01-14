@@ -312,6 +312,9 @@ def default_battle_screen():
         win = 1
     if win == 1:
         dialogue_format("The monster died!")
+        dialogue_format("You gained exp!")
+        level = mechanics.level_display(3)
+        dialogue_format(level)
         dialogue_format("You win the battle!")
     pygame.display.update()
 

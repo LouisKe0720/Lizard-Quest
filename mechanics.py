@@ -25,9 +25,9 @@ def level_display(x): # TAKES IN DIFFICULTY OF MONSTER
     global current_exp, player_level, exp_needed
     player_level, current_exp, exp_needed = gain_exp(x, current_exp, player_level, exp_needed)
     if player_level != 25: # CAN CHANGE MAX LEVEL
-        print(f"Level: {player_level}  EXP Needed: {current_exp}/{exp_needed}")
+        return(f"Level: {player_level}  EXP Needed: {current_exp}/{exp_needed}")
     else:
-        print("Level: 25 (MAX LEVEL)") # CAN CHANGE MAX LEVEL
+        return("Level: 25 (MAX LEVEL)")
 
 #############################################  HEALTH SYSTEM  #############################################
 
