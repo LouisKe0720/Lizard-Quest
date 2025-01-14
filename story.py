@@ -699,30 +699,23 @@ while running:
                         text2_num = 0
 
     if cg2:
-        if sec_s:
-            screen.blit(spark_cg, (0, 0))
-            screen.blit(dialogue_box, (0, 0))
-            dialogue("!!!", 290, 402)
-            pygame.display.update()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                sec_s = False
-                cg2_show = True
-                text2_num = 0
-                texts2 = ["!!!", "MC: FATHER!!!"]
-                texts2_x = [290, 230]
+        
+        cg2_show = True
+        text2_num = 0
+        texts2 = ["!!!", "MC: FATHER!!!"]
+        texts2_x = [290, 230]
 
-                while cg2_show and text2_num < len(texts2):
-                    screen.blit(spark_cg, (0, 0))
-                    screen.blit(dialogue_box, (0, 0))
-                    dialogue(texts2[text2_num], texts2_x[text2_num], 402)
-                    pygame.display.update()
+        while cg2_show and text2_num < len(texts2):
+            screen.blit(spark_cg, (0, 0))
+            screen.blit(dialogue_box, (0, 0))
+            dialogue(texts2[text2_num], texts2_x[text2_num], 402)
+            pygame.display.update()
 
-                    for event in pygame.event.get():
+            for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
                             exit()
@@ -749,8 +742,9 @@ while running:
             "Motherly lizard: I want to see you back here at...", "Motherly lizard: the cave when everything is over.", "MC: …I’ll try my best.",
             "Motherly lizard: Oh, and carry this rifle with you.", "Rifle gained!", "Motherly lizard: …", "MC: …",
             "Motherly lizard: …I hope we can finally avenge those","Motherly Lizard: who fought for us to live here today.", "MC: Of course… that is the sole reason I am doing this.",
-            "MC: See you after all of this ends, mum.", "MC: I will make sure that everything ends just the way Dad would’ve wanted."]
-        textsc_x = [258, 168, 140, 258, 48, 230, 90, 258, 70, 50, 120, 60, 80, 91, 100, 125, 100, 258, 240, 120, 130, 160, 120, 240, 240, 258, 130, 140, 130, 120, 100, 40]
+            "MC: See you after all of this ends, mum.", "MC: I will make sure that everything ends just the way...", "Dad would’ve wanted."]
+        textsc_x = [258, 168, 50, 258, 48, 230, 100, 258, 70, 50, 120, 60, 80, 91, 100, 125, 42, 258, 240, 120, 130, 160, 120, 240, 240, 258, 130, 140, 130, 120, 42, 100]
+
         while cave_cg and textc_num < len(texts_c):
             screen.blit(dialogue_box, (0, 0))
             dialogue(texts_c[textc_num], textsc_x[textc_num], 402)
