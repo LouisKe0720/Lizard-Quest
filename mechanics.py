@@ -143,7 +143,10 @@ def heal_hp():
     global player_health
     global max_health
     global player_magicPoints
+    global min_magic_points 
     player_magicPoints -= 15
+    if player_magicPoints < min_magic_points:
+        player_magicPoints = min_magic_points
     player_health += 5
     if player_health > max_health:
         player_health = max_health
