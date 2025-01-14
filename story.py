@@ -343,6 +343,7 @@ def show_flee_screen():
                             pygame.display.flip()
                             clock.tick(60)
                             pygame.time.wait(2000)
+                            win = 1
                             success_opened = False
                             flee_opened = False
                             return False  
