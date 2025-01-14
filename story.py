@@ -726,6 +726,7 @@ while running:
                                 cg2 = False
                                 cave_cg = True
                                 cave_s = True
+                                show_cg(cave_bg)
 
     if cave_cg:
         screen.blit(cave_bg, (0, 0))
