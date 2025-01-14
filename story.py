@@ -321,7 +321,9 @@ def draw_buttons():
     pygame.draw.rect(screen, white, flee_button)
 
 def show_flee_screen():
+    global win
     flee_opened = True
+    failed = 0
     while flee_opened:
         pygame.draw.rect(screen, white, yes_button)
         pygame.draw.rect(screen, white, no_button)
@@ -353,10 +355,14 @@ def show_flee_screen():
                             screen.blit(flee_fail_image, (0, 0))
                             pygame.display.flip()
                             pygame.time.wait(1000)  # Wait for 1 second
+                            failed = 1
                             fail_opened = False
                             flee_opened = False                
                 elif no_button.collidepoint(event.pos):
                     flee_opened = False
+        if failed == 1:
+            monster_turn()
+            failed = 0
     return True
 def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
     items_opened = True
