@@ -336,6 +336,7 @@ def show_skills_screen():
     skills_opened = True
     global dialogue_order
     gun_used = 0
+    lizard_punch_used = 0
     magic_punch_used = 0
     heal_hp_used = 0
 
