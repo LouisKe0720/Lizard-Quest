@@ -260,7 +260,7 @@ def show_battle_screen():
 
 def default_battle_screen():
     # Character Description Formating
-    global player_health, player_magicPoints, player_level, monster_health, died, lose, win, attack_done
+    global player_health, player_magicPoints, player_level, monster_health, died, lose, win
     player_health, player_magicPoints, player_level, monster_health = mechanics.display()
     lose = 0
     win = 0
@@ -308,9 +308,9 @@ def default_battle_screen():
         dialogue_format("You died!")
         dialogue_format("Try again later!")
         lose = 1
-    if monster_health <= 0 and attack_done == 1:
+    if monster_health <= 0:
         win = 1
-    if win == 1 and attack_done == 1:
+    if win == 1:
         dialogue_format("The monster died!")
         dialogue_format("You win the battle!")
     pygame.display.update()
@@ -380,8 +380,7 @@ def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
                     items_opened = False
 
 def show_skills_screen():
-    global dialogue_order, player_magicPoints, attack_done
-    attack_done = 0
+    global dialogue_order, player_magicPoints, win
     skills_opened = True
     gun_used = 0
     magic_punch_used = 0
@@ -390,6 +389,8 @@ def show_skills_screen():
     mp_dialogue = 0
 
     while skills_opened:
+        global magic_attack
+        magic_attack = 0
         pygame.draw.rect(screen, white, gun_button)
         pygame.draw.rect(screen, white, lizard_punch_button)
         pygame.draw.rect(screen, white, magic_punch_button)
@@ -428,17 +429,14 @@ def show_skills_screen():
     while gun_used == 1:
         gun_attack()
         gun_used = 0
-        attack_done = 1
-    
+        
     while magic_punch_used == 1:
         magic_punch()
         magic_punch_used = 0
-        attack_done = 1
 
     while lizard_punch_used == 1:
         lizard_punch()
         lizard_punch_used = 0
-        attack_done = 1
         
     while heal_hp_used == 1:
         heal_hp()
@@ -461,34 +459,35 @@ def lizard_punch():
     global died, win, dialogue_order
     damage = mechanics.lizard_punch()
     player_turn(damage)
-    dialogue_order = 12
-    battle_dialogue()
-    dialogue_format("You lost 10 hp from your attack!")
-    monster_turn()
+    if win != 1:
+        dialogue_order = 12
+        battle_dialogue()
+        dialogue_format("You lost 10 hp from your attack!")
+        monster_turn()
 
 def magic_punch():
     global win, dialogue_order, magic_attack
     damage = mechanics.magic_punch()
     magic_attack = 1
     player_turn(damage)
-    dialogue_order = 8
-    battle_dialogue()
     if win != 1:
+        dialogue_order = 8
+        battle_dialogue()
         monster_turn()
 
 def gun_attack():
     global win, dialogue_order
     damage = mechanics.use_gun()
     player_turn(damage)
-    dialogue_order = 6
-    battle_dialogue()
     if win != 1:
+        dialogue_order = 6
+        battle_dialogue()
         monster_turn()
 
 def player_turn(damage):
-    global died, magic_attack
+    global died, magic_attack, win
     default_battle_screen()
-    if died != 1:
+    if died != 1 and win != 1:
         if damage < 10:
             damage = "00" + str(damage)
         monster_lost_health_text = font2.render("- " + damage, True, white)
@@ -838,7 +837,7 @@ while running:
         while pixel_falling == False and battle_screen_shown == True:
             global lose, died
             show_battle_screen()
-            if lose == 0:
+            if win == 1:
                 dx = 1000
                 dy = 1000
             elif lose == 1:
