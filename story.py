@@ -852,6 +852,8 @@ while running:
                 cover_height = 0
                 pixel_falling = True
                 num_pixels = 37
+                pixel_spacing = 30
+                falling_pixels = [FallingPixel() for i in range(num_pixels)]
                 mechanics.player_health = 30
                 mechanics.monster_health = 30
     
