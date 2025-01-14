@@ -218,8 +218,9 @@ def show_time_rectangle():
         clock.tick(60)
 
 def show_battle_screen():
-    global dialogue_order, player_health, player_magicPoints, player_level, player_name_text, player_health_text, player_magicpoint_text, player_magicpoint_text2, player_level_text
+    global dialogue_order, player_health, player_magicPoints, player_level, player_name_text, player_health_text, player_magicpoint_text, player_magicpoint_text2, player_level_text, died
     dialogue_order = 1
+    died = 0
     defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
     waiting = True
     while waiting:
@@ -235,26 +236,42 @@ def show_battle_screen():
                 elif flee_button.collidepoint(event.pos):
                     if not show_flee_screen():
                         waiting = False
+        
+        if died == 1:
+            waiting = False
+        else:   
+            draw_buttons()
 
-        draw_buttons()
-
-        # Enemy 
-        global enemy
-        enemy = mutant
-        enemy.image = pygame.transform.scale(enemy.image, (200, 200))
-        default_battle_screen()
-
+            # Enemy 
+            global enemy
+            enemy = mutant
+            enemy.image = pygame.transform.scale(enemy.image, (200, 200))
+            default_battle_screen()
+            
         pygame.display.update()
+    pygame.display.update()
 
 def default_battle_screen():
     # Character Description Formating
-    player_health, player_magicPoints, player_level = mechanics.display()
-    if player_health < 100:
-        player_health = "0" + str(player_health)
-    if player_magicPoints < 100:
-        player_magicPoints = "0" + str(player_magicPoints)
-        if int(player_magicPoints) < 10:
+    global player_health, player_magicPoints, player_level, monster_health, died, lose
+    player_health, player_magicPoints, player_level, monster_health = mechanics.display()
+    lose = 0
+    if player_health <= 0:
+        player_health = "000"
+        died = 1
+    if died != 1:
+        if int(player_health) < 100:
+            player_health = "0" + str(player_health)
+            if int(player_health) < 10:
+                player_health = "0" + str(player_health)
+    if player_magicPoints < 0:
+        player_magicPoints = "000" 
+    else:
+        if player_magicPoints < 100:
             player_magicPoints = "0" + str(player_magicPoints)
+            if int(player_magicPoints) < 10:
+                player_magicPoints = "0" + str(player_magicPoints)
+
     if player_level < 100:
         player_level = "0" + str(player_level)
         if int(player_level) < 10:
@@ -267,14 +284,22 @@ def default_battle_screen():
     player_magicpoint_text2 = font.render(player_magicPoints, True, black)
     player_level_text = font.render("LV:     " + player_level, True, black)
     screen.blit(battle_screen, (0, 0))
+
     pygame.draw.rect(screen, black, player_battle_rectangle_outline)
     pygame.draw.rect(screen, white, player_battle_rectangle)
+
     screen.blit(player_name_text, (10, 15))
     screen.blit(player_health_text, (10, 60))
     screen.blit(player_magicpoint_text, (10, 90))
     screen.blit(player_level_text, (10, 120))
     screen.blit(player_magicpoint_text2, (91, 90))
-    screen.blit(enemy.image, (screen_width / 2 - 100, screen_height / 2 - 150))
+    screen.blit(enemy.image, (screen_width / 2 - 80, screen_height / 2 - 150))
+    if died == 1:
+        dialogue_format("You lost all your health!")
+        dialogue_format("You died!")
+        dialogue_format("Try again later!")
+        lose = 1
+    pygame.display.update()
 
 def draw_buttons():
     pygame.draw.rect(screen, white, skill_button)
@@ -306,7 +331,7 @@ def show_flee_screen():
                             pygame.time.wait(2000)
                             success_opened = False
                             flee_opened = False
-                            return False  # Return False to close the battle screen
+                            return False  
                     else:
                         fail_opened = True
                         while fail_opened:
@@ -343,9 +368,12 @@ def show_items_screen(defenseUpPotion, fleePotion, healOrb, magicUpPotion):
 def show_skills_screen():
     skills_opened = True
     global dialogue_order
+    global player_magicPoints
     gun_used = 0
     magic_punch_used = 0
     heal_hp_used = 0
+    lizard_punch_used = 0
+    mp_dialogue = 0
 
     while skills_opened:
         pygame.draw.rect(screen, white, gun_button)
@@ -366,123 +394,141 @@ def show_skills_screen():
                     skills_opened = False
                     gun_used = 1
                 if magic_punch_button.collidepoint(event.pos):
+                    if int(player_magicPoints) < 10:
+                        skills_opened = False
+                        mp_dialogue = 1
+                    else:
+                        skills_opened = False
+                        magic_punch_used = 1
+                if lizard_punch_button.collidepoint(event.pos):
                     skills_opened = False
-                    magic_punch_used = 1
+                    lizard_punch_used = 1
                 if heal_hp_button.collidepoint(event.pos):
-                    skills_opened = False
-                    heal_hp_used = 1
+                    if int(player_magicPoints) < 15:
+                        skills_opened = False
+                        mp_dialogue = 1
+                    else:
+                        skills_opened = False
+                        heal_hp_used = 1
 
     while gun_used == 1:
         gun_attack()
         gun_used = 0
     
     while magic_punch_used == 1:
-        mechanics.magic_punch()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 8
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
-        magic_punch_used = 0 
-        pygame.display.update()
+        magic_punch()
+        magic_punch_used = 0
 
+    while lizard_punch_used == 1:
+        lizard_punch()
+        lizard_punch_used = 0
+        
     while heal_hp_used == 1:
-        mechanics.heal_hp()
-        default_battle_screen()
-        pygame.display.update()
-        dialogue_order = 10
-        battle_dialogue()
-        mechanics.monster_attack()
-        dialogue_order = 4
-        battle_dialogue()
+        heal_hp()
         heal_hp_used = 0
-        pygame.display.update()
+
+    while mp_dialogue == 1:
+        default_battle_screen()
+        dialogue_format("Not enough MP!")
+        mp_dialogue = 0
+
+def heal_hp():
+    global dialogue_order
+    heal = mechanics.heal_hp()
+    default_battle_screen()
+    dialogue_order = 10
+    battle_dialogue()
+    monster_turn()
+
+def lizard_punch():
+    global died
+    damage = mechanics.lizard_punch()
+    player_turn(damage, 12)
+    if died != 1:
+        dialogue_format("You lost 10 hp from your attack!")
+        monster_turn()
+
+def magic_punch():
+    damage = mechanics.magic_punch()
+    player_turn(damage, 8)
+    monster_turn()
 
 def gun_attack():
-    global dialogue_order
     damage = mechanics.use_gun()
+    player_turn(damage, 6)
+    monster_turn()
+
+def player_turn(damage, x):
+    global dialogue_order
+    global died
     default_battle_screen()
-
-    # Player attack text
-    if damage < 10:
-        damage = "00" + str(damage)
-    monster_lost_health_text = font2.render("- " + damage, True, white)
-    text_x = enemy.rect.centerx / 2 - 10
-    print(text_x)
-    text_y = enemy.rect.top - 100
-    print(text_y)
-    screen.blit(monster_lost_health_text, (text_x, text_y))
-
-    # Monster attack
-    dialogue_order = 6
-    battle_dialogue()
+    if died != 1:
+        if damage < 10:
+            damage = "00" + str(damage)
+        monster_lost_health_text = font2.render("- " + damage, True, white)
+        text_x = enemy.rect.centerx / 2 + 15
+        text_y = enemy.rect.top - 115
+        screen.blit(monster_lost_health_text, (text_x, text_y))
+        dialogue_order = x
+        attack_sound()
+        battle_dialogue()
+        
+def monster_turn():
+    global dialogue_order
+    default_battle_screen()
     monster_damage = mechanics.monster_attack()
     dialogue_order = 4
+    take_damage_sound()
     battle_dialogue()
+    dialogue_format("You lost " + str(monster_damage) + " hp!")
+    mechanics.regen_mp()
+    default_battle_screen()
+
+def attack_sound():
+    sound = pygame.mixer.Sound("DQ Attack.mp3")
+    sound.play()
+
+def attack_sound2():
+    sound = pygame.mixer.Sound("DQ Spell.mp3")
+    sound.play()
+
+def take_damage_sound():
+    sound = pygame.mixer.Sound("DQ Take Dmg.mp3")
+    sound.play()
 
 def battle_dialogue():
     global dialogue_order
     if dialogue_order == 1:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You encountered a mutant!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You encountered a mutant!")
 
     if dialogue_order == 2:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("What do you want to do?", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("What do you want to do?")
 
     if dialogue_order == 4:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("The mutant punched you", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("The mutant attacked you!")
 
     if dialogue_order == 6:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used your gun!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used your gun!")
     
     if dialogue_order == 8:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used magic punch!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used magic punch!")
 
     if dialogue_order == 10:
-        pygame.draw.rect(screen, black, dialogueBoxOutline)
-        pygame.draw.rect(screen, white, dialogueBox)
-        dialogue_text = font.render("You used heal hp!", True, black)
-        text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
-        screen.blit(dialogue_text, text_rect.topleft)
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        dialogue_order += 1
+        dialogue_format("You used heal!")
+
+    if dialogue_order == 12:
+        dialogue_format("You used lizard punch!")
+
+def dialogue_format(text):
+    global dialogue_order
+    pygame.draw.rect(screen, black, dialogueBoxOutline)
+    pygame.draw.rect(screen, white, dialogueBox)
+    dialogue_text = font.render(text, True, black)
+    text_rect = dialogue_text.get_rect(center=(dialogueBox.x + dialogueBox.width / 2, dialogueBox.y + dialogueBox.height / 2))
+    screen.blit(dialogue_text, text_rect.topleft)
+    pygame.display.flip()
+    pygame.time.wait(1500)
+    dialogue_order += 1
 
 def show_dialogue_box():
     dialogue_box = pygame.image.load("DIALOGUE BOX 1.png")
@@ -525,6 +571,8 @@ def dialogue(text, text_x, text_y):
 mechanics.start_stopwatch()  
 show_title_screen()
 show_start_screen()
+time.sleep(1)
+show_dialogue_box()
 pygame.mixer.music.load("DQ Adventure Theme.mp3")
 pygame.mixer.music.play(-1)
 
@@ -699,9 +747,22 @@ while running:
         screen_cover(screen, cover_height)
     
     while pixel_falling == False and battle_screen_shown == True:
+        global lose, died
         show_battle_screen()
-        dx = 1000
-        dy = 1000
+        if lose == 0:
+            dx = 1000
+            dy = 1000
+        elif lose == 1:
+            enemy.image = pygame.transform.scale(enemy.image, (100, 100))
+            x -= 20
+            lose = 0
+            died = 0
+            cover_height = 0
+            pixel_falling = True
+            num_pixels = 37
+            mechanics.player_health = 30
+            mechanics.monster_health = 30
+
         battle_screen_shown = False
         pygame.mixer.music.load("DQ Adventure Theme.mp3")
         pygame.mixer.music.play(-1)
