@@ -829,6 +829,7 @@ while running:
                 x -= 20
                 lose = 0
                 died = 0
+                win = 0
                 cover_height = 0
                 pixel_falling = True
                 num_pixels = 37
