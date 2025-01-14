@@ -224,9 +224,10 @@ def show_time_rectangle():
         clock.tick(60)
 
 def show_battle_screen():
-    global dialogue_order, player_health, player_magicPoints, player_level, player_name_text, player_health_text, player_magicpoint_text, player_magicpoint_text2, player_level_text, died
+    global dialogue_order, player_health, player_magicPoints, player_level, player_name_text, player_health_text, player_magicpoint_text, player_magicpoint_text2, player_level_text, died, win
     dialogue_order = 1
     died = 0
+    win = 0
     defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
     waiting = True
     while waiting:
@@ -243,7 +244,7 @@ def show_battle_screen():
                     if not show_flee_screen():
                         waiting = False
         
-        if died == 1:
+        if died or win == 1:
             waiting = False
         else:   
             draw_buttons()
@@ -259,9 +260,18 @@ def show_battle_screen():
 
 def default_battle_screen():
     # Character Description Formating
-    global player_health, player_magicPoints, player_level, monster_health, died, lose
+    global player_health, player_magicPoints, player_level, monster_health, died, lose, win
     player_health, player_magicPoints, player_level, monster_health = mechanics.display()
     lose = 0
+    win = 0
+    if monster_health <= 0:
+        win = 1
+    if win == 1:
+        
+        dialogue_format("The monster has lost all of it's health!")
+        dialogue_format("You win the battle!")
+        pygame.display.update()
+
     if player_health <= 0:
         player_health = "000"
         died = 1
@@ -450,25 +460,27 @@ def lizard_punch():
     global died
     damage = mechanics.lizard_punch()
     player_turn(damage, 12)
-    if died != 1:
+    if died and win != 1:
         dialogue_format("You lost 10 hp from your attack!")
         monster_turn()
 
 def magic_punch():
     damage = mechanics.magic_punch()
     player_turn(damage, 8)
-    monster_turn()
+    if win != 1:
+        monster_turn()
 
 def gun_attack():
     damage = mechanics.use_gun()
     player_turn(damage, 6)
-    monster_turn()
+    if win != 1:
+        monster_turn()
 
 def player_turn(damage, x):
     global dialogue_order
     global died
     default_battle_screen()
-    if died != 1:
+    if died and win != 1:
         if damage < 10:
             damage = "00" + str(damage)
         monster_lost_health_text = font2.render("- " + damage, True, white)
@@ -807,12 +819,12 @@ while running:
             screen_cover(screen, cover_height)
         
         while pixel_falling == False and battle_screen_shown == True:
-            global lose, died
+            global lose, died, win
             show_battle_screen()
-            if lose == 0:
+            if lose or win == 0:
                 dx = 1000
                 dy = 1000
-            elif lose == 1:
+            elif lose or win == 1:
                 enemy.image = pygame.transform.scale(enemy.image, (100, 100))
                 x -= 20
                 lose = 0
@@ -821,7 +833,7 @@ while running:
                 pixel_falling = True
                 num_pixels = 37
                 mechanics.player_health = 30
-                mechanics.monster_health = 30
+                mechanics.monster_health = 3
     
             battle_screen_shown = False
             pygame.mixer.music.load("DQ Adventure Theme.mp3")
