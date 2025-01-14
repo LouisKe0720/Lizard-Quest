@@ -253,8 +253,9 @@ def show_battle_screen():
 
 def default_battle_screen():
     # Character Description Formating
-    global player_health, player_magicPoints, player_level, monster_health, died
+    global player_health, player_magicPoints, player_level, monster_health, died, lose
     player_health, player_magicPoints, player_level, monster_health = mechanics.display()
+    lose = 0
     if player_health <= 0:
         player_health = "000"
         died = 1
@@ -297,6 +298,7 @@ def default_battle_screen():
         dialogue_format("You lost all your health!")
         dialogue_format("You died!")
         dialogue_format("Try again later!")
+        lose = 1
     pygame.display.update()
 
 def draw_buttons():
@@ -745,9 +747,22 @@ while running:
         screen_cover(screen, cover_height)
     
     while pixel_falling == False and battle_screen_shown == True:
+        global lose, died
         show_battle_screen()
-        dx = 1000
-        dy = 1000
+        if lose == 0:
+            dx = 1000
+            dy = 1000
+        elif lose == 1:
+            enemy.image = pygame.transform.scale(enemy.image, (100, 100))
+            x -= 20
+            lose = 0
+            died = 0
+            cover_height = 0
+            pixel_falling = True
+            num_pixels = 37
+            mechanics.player_health = 30
+            mechanics.monster_health = 30
+
         battle_screen_shown = False
         pygame.mixer.music.load("DQ Adventure Theme.mp3")
         pygame.mixer.music.play(-1)
