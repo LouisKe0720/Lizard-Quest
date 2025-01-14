@@ -106,15 +106,15 @@ def use_gun():
 def lizard_punch():
     global player_health
     player_health -= 10
-    monster_damage(6)
-    return 7
+    monster_damage(8)
+    return 8
 
 # SKILL 3
 def magic_punch():
     global player_magicPoints 
     player_magicPoints -= 10
     monster_damage(6)
-    return 9
+    return 6
 
 # SKILL 4
 def heal_hp():
@@ -122,13 +122,11 @@ def heal_hp():
     global max_health
     global player_magicPoints
     player_magicPoints -= 15
-    heal_amount = random.randint(5, 10)
-    if player_health + heal_amount >= max_health:
-        heal_amount2 = max_health - player_health
-    else:
-        player_health += heal_amount
-        heal_amount2 = heal_amount
-    return heal_amount2
+    heal_amount = random.randint(5, 8)
+    player_health += heal_amount
+    if player_health > max_health:
+        player_health = max_health
+    return
 
 def regen_mp():
     global player_magicPoints
