@@ -228,6 +228,7 @@ def show_battle_screen():
     dialogue_order = 1
     died = 0
     win = 0
+    first_scene = 1
     defenseUpPotion, fleePotion, healOrb, magicUpPotion = mechanics.item_appear()
     waiting = True
     while waiting:
@@ -254,7 +255,10 @@ def show_battle_screen():
             enemy = mutant
             enemy.image = pygame.transform.scale(enemy.image, (200, 200))
             default_battle_screen()
-            
+            if first_scene == 1:
+                dialogue_format("You encountered a mutant!")
+                dialogue_format("What do you want to do?")
+                first_scene = 0     
         pygame.display.update()
     pygame.display.update()
 
@@ -535,13 +539,6 @@ def take_damage_sound():
 
 def battle_dialogue():
     global dialogue_order
-    if dialogue_order == 1:
-        dialogue_format("You encountered a mutant!")
-        dialogue_order = 2
-
-    if dialogue_order == 2:
-        dialogue_format("What do you want to do?")
-        dialogue_order = 3
 
     if dialogue_order == 4:
         dialogue_format("The mutant attacked you!")
